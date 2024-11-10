@@ -1,11 +1,11 @@
 import { Box, Alert, Typography, IconButton } from "@mui/material";
-import { Delete as DeleteIcon, Alarm as AlarmIcon, AddShoppingCart as AddShoppingCartIcon } from "@mui/icons-material";
 
 import Item from "../components/YItem";
 
 import { queryClient, useApp } from "../ThemedApp";
 import { useQuery, useMutation } from "react-query";
 import BalanceCard from "../components/BalanceCard";
+import ActionButton from "../components/ActionButton";
 
 export default function Home() {
 	const api = import.meta.env.VITE_YENZAY_API;
@@ -28,24 +28,11 @@ export default function Home() {
 	}
 
 	return (
-		<Box style={styles.green}>
+		<Box style={styles.container}>
+			<Box style={styles.background} />
 			<Box>
 				<BalanceCard />
-
-				<Box style={styles.actions}>
-					<IconButton aria-label="delete">
-						<DeleteIcon />
-					</IconButton>
-					<IconButton aria-label="delete" disabled color="primary">
-						<DeleteIcon />
-					</IconButton>
-					<IconButton color="secondary" aria-label="add an alarm">
-						<AlarmIcon />
-					</IconButton>
-					<IconButton color="primary" aria-label="add to shopping cart">
-						<AddShoppingCartIcon />
-					</IconButton>
-				</Box>
+				<ActionButton />
 			</Box>
 
 			<Box style={styles.transactions}>
@@ -67,19 +54,16 @@ export default function Home() {
 
 
 const styles = {
-	green: {
-		// background: "green",
-		backgroundColor: `rgba(109, 37, 229, 1.00)`,
-		backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0))`,
-		backgroundImage: `linear-gradient(90deg, #0062ff, #da61ff)`,
+	container: {
+		backgroundColor: "#6d25e5",
 	},
-	actions: {
-		paddingTop: 30,
-		paddingLeft: 25,
-		paddingRight: 25,
-		paddingBottom: 25,
-		flexDirection: "row",
-		justifyContent: "space-between",
+	background: {
+		position: "absolute",
+		left: 0,
+		right: 0,
+		top: 100,
+		height: 200,
+		backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0))`,
 	},
 	moreActionBar: {
 		width: 100,

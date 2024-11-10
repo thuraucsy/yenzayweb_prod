@@ -31,6 +31,7 @@ const styles = {
         borderBottomLeftRadius: 25,
         borderBottomRightRadius: 25,
         backgroundColor: "#6d25e5",
+		position: "relative",
     },
     balance: {
         marginTop: 12,
