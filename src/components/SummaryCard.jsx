@@ -1,6 +1,6 @@
 import { Typography, Box } from "@mui/material";
 
-export default function BalanceCard() {
+export default function SummaryCard() {
     return (
         <Box style={styles.banner} sx={{
             display: "flex",
@@ -8,19 +8,20 @@ export default function BalanceCard() {
             justifyContent: "space-between",
         }}>
             <Box>
-                <Typography style={styles.text.label}>Balance</Typography>
+                <Typography style={styles.text.label}>Summary</Typography>
                 <Box style={styles.balance} sx={{
                     display: "flex",
                     flexDirection: "row",
                     justifyContent: "space-between",
                 }}>
-                    <Typography style={styles.text.label}>$</Typography>
-                    <Typography style={styles.text.amount}>12,543.74</Typography>
+                    <Typography style={styles.text.label}>¥</Typography>
+                    <Typography style={styles.text.amount}>10,000</Typography>
+                    <Typography style={styles.text.label}>/&nbsp;&nbsp;K 292,188</Typography>
                 </Box>
             </Box>
-            <Box style={styles.balanceGrowth}>
+            {/* <Box style={styles.balanceGrowth}>
                 <Typography style={styles.text.growth}>+520 Today</Typography>
-            </Box>
+            </Box> */}
         </Box>
     );
 }
@@ -31,7 +32,9 @@ const styles = {
         borderBottomLeftRadius: 25,
         borderBottomRightRadius: 25,
         backgroundColor: "#6d25e5",
-		position: "relative",
+		position: "sticky",
+        top: -1,
+        zIndex: 10,
     },
     balance: {
         marginTop: 12,

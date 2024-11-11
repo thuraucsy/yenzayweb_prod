@@ -2,9 +2,8 @@ import { Box, Alert, Typography, IconButton } from "@mui/material";
 
 import Item from "../components/YItem";
 
-import { queryClient, useApp } from "../ThemedApp";
 import { useQuery, useMutation } from "react-query";
-import BalanceCard from "../components/BalanceCard";
+import SummaryCard from "../components/SummaryCard";
 import ActionButton from "../components/ActionButton";
 
 export default function Home() {
@@ -30,17 +29,18 @@ export default function Home() {
 	return (
 		<Box style={styles.container}>
 			<Box style={styles.background} />
+			<SummaryCard />
 			<Box>
-				<BalanceCard />
 				<ActionButton />
 			</Box>
 
 			<Box style={styles.transactions}>
-				<Typography style={styles.text.label}>Recent Transactions</Typography>
-				{data.Items.map(item => {
+				<Typography style={{...styles.text.label, ...styles.text.label.summaryCard}}>{data.Items[0].YearMonth}/{data.Items[0].DayTime}</Typography>
+				<Typography style={styles.text.label}>{data.Items[0].YearMonth}/{data.Items[0].DayTime.split(` `)[0]}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Typography>
+				{data.Items.slice().reverse().map(item => {
 					return (
 						<Item
-							key={item.id}
+							key={item.YearMonth + item.DayTime}
 							item={item}
 						/>
 					);
@@ -83,7 +83,20 @@ const styles = {
 	text: {
 		label: {
 			fontWeight: "bold",
-			color: "#aaa",
+			color: "rgb(249 19 161)",
+			paddingBottom: 6,
+			position: "sticky",
+			top: 120,
+			zIndex: 20,
+			textAlign: "center",
+			summaryCard: {
+				color: "#aaa",
+				position: "fixed",
+				top: 120,
+				left: 0,
+				right: 0,
+				margin: "auto",
+			}
 		},
 	},
 };

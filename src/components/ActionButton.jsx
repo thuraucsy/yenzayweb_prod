@@ -1,22 +1,42 @@
-import { Typography, Box, IconButton } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 import { Fingerprint, QrCodeScanner, CurrencyYen, History } from "@mui/icons-material";
-import QrCodeScannerIcon from '@mui/icons-material/QrCodeScanner';
 
 export default function ActionButton({ color, icon, label, path }) {
     return (
         <Box style={styles.actions}>
-            <IconButton style={styles.actionButton}>
-                <Fingerprint style={styles.svgButton} />
-            </IconButton>
-            <IconButton style={{...styles.actionButton, ...styles.actionButton.color.scan}}>
-                <QrCodeScanner style={styles.svgButton} />
-            </IconButton>
-            <IconButton style={{...styles.actionButton, ...styles.actionButton.color.rate}}>
-                <CurrencyYen style={styles.svgButton} />
-            </IconButton>
-            <IconButton style={styles.actionButton}>
-                <History style={styles.svgButton} />
-            </IconButton>
+            <Box style={styles.actionButtonGroup}>
+                <IconButton style={styles.actionButton}>
+                    <Fingerprint style={styles.svgButton} />
+                </IconButton>
+                <Typography style={styles.text.actionText}>
+                    Calendar
+                </Typography>
+            </Box>
+
+            <Box style={styles.actionButtonGroup}>
+                <IconButton style={{ ...styles.actionButton, ...styles.actionButton.color.scan }}>
+                    <QrCodeScanner style={styles.svgButton} />
+                </IconButton>
+                <Typography style={styles.text.actionText}>
+                    Simulator
+                </Typography>
+            </Box>
+            <Box style={styles.actionButtonGroup}>
+                <IconButton style={{ ...styles.actionButton, ...styles.actionButton.color.rate }}>
+                    <CurrencyYen style={styles.svgButton} />
+                </IconButton>
+                <Typography style={styles.text.actionText}>
+                    Chart
+                </Typography>
+            </Box>
+            <Box style={styles.actionButtonGroup}>
+                <IconButton style={styles.actionButton}>
+                    <History style={styles.svgButton} />
+                </IconButton>
+                <Typography style={styles.text.actionText}>
+                    Setting
+                </Typography>
+            </Box>
         </Box>
     );
 }
@@ -32,6 +52,11 @@ const styles = {
         justifyContent: "center",
         alignItems: "center",
         gap: 8,
+    },
+    actionButtonGroup: {
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
     },
     actionButton: {
         width: 68,
@@ -56,6 +81,8 @@ const styles = {
     text: {
         actionText: {
             color: "#fff",
+            textAlign: "center",
+            paddingTop: 4,
         },
     },
 };
