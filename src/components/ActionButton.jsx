@@ -1,15 +1,68 @@
 import { Box, IconButton, Typography } from "@mui/material";
-import { Fingerprint, QrCodeScanner, CurrencyYen, History } from "@mui/icons-material";
+import { Event, QrCodeScanner, CurrencyYen, History } from "@mui/icons-material";
+
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+
+import { useApp } from "../ThemedApp";
+
+function ButtonField(props) {
+    const {
+        setOpen,
+        label,
+        id,
+        disabled,
+        InputProps: { ref } = {},
+        inputProps: { 'aria-label': ariaLabel } = {},
+    } = props;
+
+    return (
+
+        <IconButton style={styles.actionButton}
+            variant="outlined"
+            id={id}
+            disabled={disabled}
+            ref={ref}
+            aria-label={ariaLabel}
+            onClick={() => setOpen?.((prev) => !prev)}
+        >
+            <Event style={styles.svgButton} />
+        </IconButton>
+    );
+}
+
+function ButtonDatePicker(props) {
+    const { open, setOpen } = useApp();
+
+    return (
+        <DatePicker
+            displayWeekNumber
+            slots={{ ...props.slots, field: ButtonField }}
+            slotProps={{ ...props.slotProps, field: { setOpen } }}
+            {...props}
+            open={open}
+            onClose={() => setOpen(false)}
+            onOpen={() => setOpen(true)}
+        />
+    );
+}
 
 export default function ActionButton({ color, icon, label, path }) {
+    const { calendarValue, setCalendarValue } = useApp();
+
     return (
         <Box style={styles.actions}>
             <Box style={styles.actionButtonGroup}>
-                <IconButton style={styles.actionButton}>
-                    <Fingerprint style={styles.svgButton} />
-                </IconButton>
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <ButtonDatePicker
+                        label={calendarValue == null ? null : calendarValue.format('YYYY/MM/DD')}
+                        value={calendarValue}
+                        onChange={(newValue) => setCalendarValue(newValue)}
+                    />
+                </LocalizationProvider>
                 <Typography style={styles.text.actionText}>
-                    Calendar
+                    {calendarValue == null ? "Calendar" : calendarValue.format('MM/DD')}
                 </Typography>
             </Box>
 

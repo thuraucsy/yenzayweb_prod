@@ -15,8 +15,8 @@ export default function SummaryCard() {
                     justifyContent: "space-between",
                 }}>
                     <Typography style={styles.text.label}>¥</Typography>
-                    <Typography style={styles.text.amount}>10,000</Typography>
-                    <Typography style={styles.text.label}>/&nbsp;&nbsp;K 292,188</Typography>
+                    <Typography style={styles.text.amount}>10,314</Typography>
+                    <Typography style={styles.text.label}>/&nbsp;&nbsp;K300,000</Typography>
                 </Box>
             </Box>
             {/* <Box style={styles.balanceGrowth}>
@@ -32,7 +32,7 @@ const styles = {
         borderBottomLeftRadius: 25,
         borderBottomRightRadius: 25,
         backgroundColor: "#6d25e5",
-		position: "sticky",
+        position: "sticky",
         top: -1,
         zIndex: 10,
     },

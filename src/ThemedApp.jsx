@@ -61,6 +61,8 @@ export default function ThemedApp() {
 	const [globalMsg, setGlobalMsg] = useState(null);
 	const [auth, setAuth] = useState(null);
 	const [mode, setMode] = useState("light");
+	const [calendarValue, setCalendarValue] = useState(null);
+	const [open, setOpen] = useState(false);
 
 	const theme = useMemo(() => {
 		return createTheme({
@@ -89,6 +91,10 @@ export default function ThemedApp() {
 					setAuth,
 					mode,
 					setMode,
+					calendarValue,
+					setCalendarValue,
+					open,
+					setOpen,
 				}}>
 				<QueryClientProvider client={queryClient}>
 					<RouterProvider router={router} />

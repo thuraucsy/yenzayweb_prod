@@ -36,7 +36,7 @@ export default function Home() {
 
 			<Box style={styles.transactions}>
 				<Typography style={{...styles.text.label, ...styles.text.label.summaryCard}}>{data.Items[0].YearMonth}/{data.Items[0].DayTime}</Typography>
-				<Typography style={styles.text.label}>{data.Items[0].YearMonth}/{data.Items[0].DayTime.split(` `)[0]}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</Typography>
+				<Typography style={styles.text.label}>{data.Items[0].YearMonth}/{data.Items[0].DayTime.split(` `)[0]}</Typography>
 				{data.Items.slice().reverse().map(item => {
 					return (
 						<Item
@@ -93,7 +93,7 @@ const styles = {
 				color: "#aaa",
 				position: "fixed",
 				top: 120,
-				left: 0,
+				left: 46,
 				right: 0,
 				margin: "auto",
 			}
