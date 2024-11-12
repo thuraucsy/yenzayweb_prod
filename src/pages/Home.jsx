@@ -1,4 +1,6 @@
 import { Box, Alert, Typography, IconButton } from "@mui/material";
+import { useApp } from "../ThemedApp";
+import { queryClient } from "../ThemedApp";
 
 import Item from "../components/YItem";
 
@@ -6,8 +8,15 @@ import { useQuery, useMutation } from "react-query";
 import SummaryCard from "../components/SummaryCard";
 import ActionButton from "../components/ActionButton";
 
+const api = import.meta.env.VITE_YENZAY_API;
+let calendarValuePrev = null;
+
 export default function Home() {
-	const api = import.meta.env.VITE_YENZAY_API;
+	const { calendarValue } = useApp();
+	if (calendarValue && calendarValue !== calendarValuePrev) {
+		calendarValuePrev = calendarValue;
+		queryClient.invalidateQueries({ queryKey: ["yenzay"] })
+	}
 
 	const { isLoading, isError, error, data } = useQuery("yenzay", async () => {
 		const res = await fetch(`${api}/day/today.json`);
