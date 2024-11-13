@@ -1,11 +1,13 @@
 import { Box, IconButton, Typography } from "@mui/material";
-import { Event, QrCodeScanner, CurrencyYen, History } from "@mui/icons-material";
+import { EventTwoTone, CalculateTwoTone, TimelineTwoTone, CurrencyExchangeTwoTone } from "@mui/icons-material";
 
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 import { useApp } from "../ThemedApp";
+
+import { useNavigate } from "react-router-dom";
 
 function ButtonField(props) {
     const {
@@ -27,7 +29,7 @@ function ButtonField(props) {
             aria-label={ariaLabel}
             onClick={() => setOpen?.((prev) => !prev)}
         >
-            <Event style={styles.svgButton} />
+            <EventTwoTone style={styles.svgButton} />
         </IconButton>
     );
 }
@@ -50,6 +52,7 @@ function ButtonDatePicker(props) {
 
 export default function ActionButton({ color, icon, label, path }) {
     const { calendarValue, setCalendarValue } = useApp();
+    const navigate = useNavigate();
 
     return (
         <Box style={styles.actions}>
@@ -67,8 +70,10 @@ export default function ActionButton({ color, icon, label, path }) {
             </Box>
 
             <Box style={styles.actionButtonGroup}>
-                <IconButton style={{ ...styles.actionButton, ...styles.actionButton.color.scan }}>
-                    <QrCodeScanner style={styles.svgButton} />
+                <IconButton style={{ ...styles.actionButton, ...styles.actionButton.color.scan }} onClick={() => {
+                    navigate("/register");
+                }}>
+                    <CalculateTwoTone style={styles.svgButton} />
                 </IconButton>
                 <Typography style={styles.text.actionText}>
                     Simulator
@@ -76,7 +81,7 @@ export default function ActionButton({ color, icon, label, path }) {
             </Box>
             <Box style={styles.actionButtonGroup}>
                 <IconButton style={{ ...styles.actionButton, ...styles.actionButton.color.rate }}>
-                    <CurrencyYen style={styles.svgButton} />
+                    <TimelineTwoTone style={styles.svgButton} />
                 </IconButton>
                 <Typography style={styles.text.actionText}>
                     Chart
@@ -84,10 +89,10 @@ export default function ActionButton({ color, icon, label, path }) {
             </Box>
             <Box style={styles.actionButtonGroup}>
                 <IconButton style={styles.actionButton}>
-                    <History style={styles.svgButton} />
+                    <CurrencyExchangeTwoTone style={styles.svgButton} />
                 </IconButton>
                 <Typography style={styles.text.actionText}>
-                    Setting
+                    Fx Rate
                 </Typography>
             </Box>
         </Box>
