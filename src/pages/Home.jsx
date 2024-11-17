@@ -1,25 +1,29 @@
 import { Box, Alert, Typography, IconButton } from "@mui/material";
 import { useApp } from "../ThemedApp";
-import { queryClient } from "../ThemedApp";
 
 import Item from "../components/YItem";
 
-import { useQuery, useMutation } from "react-query";
+import { useQuery } from "react-query";
 import SummaryCard from "../components/SummaryCard";
 import ActionButton from "../components/ActionButton";
 
 const api = import.meta.env.VITE_YENZAY_API;
-let calendarValuePrev = null;
 
 export default function Home() {
 	const { calendarValue } = useApp();
-	if (calendarValue && calendarValue !== calendarValuePrev) {
-		calendarValuePrev = calendarValue;
-		queryClient.invalidateQueries({ queryKey: ["yenzay"] })
-	}
 
-	const { isLoading, isError, error, data } = useQuery("yenzay", async () => {
-		const res = await fetch(`${api}/day/today.json`);
+	const { isLoading, isError, error, data } = useQuery(["yenzay", calendarValue], async ({ queryKey }) => {
+		const [_, calendarValue] = queryKey
+		let apiUrl = `${api}/day/today.json`;
+
+		/** calendarValue change && not today date */
+		if (calendarValue && calendarValue.format("YYYY/MM/DD") !== new Date().toLocaleDateString("ja-JP", {
+			year: "numeric", month: "2-digit",
+			day: "2-digit"
+		})) {
+			apiUrl = `${api}/month/${calendarValue.format("YYYYMM")}.json`;
+		}
+		const res = await fetch(apiUrl);
 		return res.json();
 	});
 
@@ -44,16 +48,19 @@ export default function Home() {
 			</Box>
 
 			<Box style={styles.transactions}>
-				<Typography style={{...styles.text.label, ...styles.text.label.summaryCard}}>{data.Items[0].YearMonth}/{data.Items[0].DayTime}</Typography>
+				<Typography style={{ ...styles.text.label, ...styles.text.label.summaryCard }}>{data.Items[0].YearMonth}/{data.Items[0].DayTime}</Typography>
 				<Typography style={styles.text.label}>{data.Items[0].YearMonth}/{data.Items[0].DayTime.split(` `)[0]}</Typography>
-				{data.Items.slice().reverse().map(item => {
-					return (
-						<Item
-							key={item.YearMonth + item.DayTime}
-							item={item}
-						/>
-					);
-				})}
+
+				{
+					data.Items.slice().reverse().map(item => {
+						return (
+							<Item
+								key={item.YearMonth + item.DayTime}
+								item={item}
+							/>
+						);
+					})
+				}
 			</Box>
 
 

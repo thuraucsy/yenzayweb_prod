@@ -6,6 +6,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 import { useApp } from "../ThemedApp";
+import { queryClient } from "../ThemedApp";
 
 import { useNavigate } from "react-router-dom";
 
@@ -36,13 +37,19 @@ function ButtonField(props) {
 
 function ButtonDatePicker(props) {
     const { open, setOpen } = useApp();
+    const { calendarValue, setCalendarValue } = useApp();
 
     return (
         <DatePicker
             displayWeekNumber
             slots={{ ...props.slots, field: ButtonField }}
             slotProps={{ ...props.slotProps, field: { setOpen } }}
-            {...props}
+            label={calendarValue == null ? null : calendarValue.format('YYYY/MM/DD')}
+            value={calendarValue}
+            onAccept={(newValue) => {
+                setCalendarValue(newValue);
+            }}
+            views={['year', 'month', 'day']}
             open={open}
             onClose={() => setOpen(false)}
             onOpen={() => setOpen(true)}
@@ -51,18 +58,14 @@ function ButtonDatePicker(props) {
 }
 
 export default function ActionButton({ color, icon, label, path }) {
-    const { calendarValue, setCalendarValue } = useApp();
     const navigate = useNavigate();
+    const { calendarValue } = useApp();
 
     return (
         <Box style={styles.actions}>
             <Box style={styles.actionButtonGroup}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <ButtonDatePicker
-                        label={calendarValue == null ? null : calendarValue.format('YYYY/MM/DD')}
-                        value={calendarValue}
-                        onChange={(newValue) => setCalendarValue(newValue)}
-                    />
+                    <ButtonDatePicker />
                 </LocalizationProvider>
                 <Typography style={styles.text.actionText}>
                     {calendarValue == null ? "Calendar" : calendarValue.format('MM/DD')}
