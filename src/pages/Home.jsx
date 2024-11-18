@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 
-import SummaryCard from "../components/SummaryCard";
+import SimulationCard from "../components/SimulationCard";
 import ActionButton from "../components/ActionButton";
 import HomeItem from "../components/HomeItem";
 
@@ -9,7 +9,7 @@ export default function Home() {
 	return (
 		<Box style={styles.container}>
 			<Box style={styles.background} />
-			<SummaryCard />
+			<SimulationCard />
 			<Box>
 				<ActionButton />
 			</Box>

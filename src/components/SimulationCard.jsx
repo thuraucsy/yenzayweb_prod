@@ -1,6 +1,6 @@
 import { Typography, Box } from "@mui/material";
 
-export default function SummaryCard() {
+export default function SimulationCard() {
     return (
         <Box style={styles.banner} sx={{
             display: "flex",
@@ -8,7 +8,7 @@ export default function SummaryCard() {
             justifyContent: "space-between",
         }}>
             <Box>
-                <Typography style={styles.text.label}>Summary</Typography>
+                <Typography style={styles.text.label}>Simulation Result</Typography>
                 <Box style={styles.balance} sx={{
                     display: "flex",
                     flexDirection: "row",

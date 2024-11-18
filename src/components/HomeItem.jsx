@@ -30,6 +30,10 @@ export default function HomeItem() {
         data.Items = data.Items.filter(x => x.DayTime.indexOf(`${calendarValue.format("DD ")}`) > -1);
     }
 
+    if (isLoading) {
+        return <Box style={styles.error}>Loading...</Box>
+    }
+
     if (isError || !data || data.Items.length === 0) {
         return (
             <Box style={styles.error}>
@@ -38,13 +42,9 @@ export default function HomeItem() {
         );
     }
 
-    if (isLoading) {
-        return <Box style={styles.error}>Loading...</Box>
-    }
-
     return (
         <Box>
-            <Typography style={{ ...styles.text.label, ...styles.text.label.summaryCard }}>{data.Items[0].YearMonth}/{data.Items[0].DayTime}</Typography>
+            <Typography style={{ ...styles.text.label, ...styles.text.label.SimulationCard }}>{data.Items[0].YearMonth}/{data.Items[0].DayTime}</Typography>
             <Typography style={styles.text.label}>{data.Items[0].YearMonth}/{data.Items[0].DayTime.split(` `)[0]}</Typography>
 
             {
@@ -72,7 +72,7 @@ const styles = {
             top: 120,
             zIndex: 20,
             textAlign: "center",
-            summaryCard: {
+            SimulationCard: {
                 color: "#aaa",
                 position: "fixed",
                 top: 120,
