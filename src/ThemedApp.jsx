@@ -10,6 +10,7 @@ import Template from "./Template";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Chart from "./pages/Chart";
 import Likes from "./pages/Likes";
 import Profile from "./pages/Profile";
 import Comments from "./pages/Comments";
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
 			{
 				path: "/",
 				element: <Home />,
+			},
+			{
+				path: "/Chart",
+				element: <Chart />,
 			},
 			{
 				path: "/login",
@@ -63,6 +68,7 @@ export default function ThemedApp() {
 	const [mode, setMode] = useState("light");
 	const [calendarValue, setCalendarValue] = useState(null);
 	const [open, setOpen] = useState(false);
+	const [btnType, setBtnType] = useState("calendar");
 
 	const theme = useMemo(() => {
 		return createTheme({
@@ -95,6 +101,8 @@ export default function ThemedApp() {
 					setCalendarValue,
 					open,
 					setOpen,
+					btnType,
+					setBtnType,
 				}}>
 				<QueryClientProvider client={queryClient}>
 					<RouterProvider router={router} />

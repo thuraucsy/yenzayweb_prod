@@ -3,8 +3,24 @@ import { Box } from "@mui/material";
 import SimulationCard from "../components/SimulationCard";
 import ActionButton from "../components/ActionButton";
 import HomeItem from "../components/HomeItem";
+import Chart from "./Chart";
+import Register from "./Register";
+import { useApp } from "../ThemedApp";
+
+function SelectedItem() {
+	const { btnType } = useApp();
+	if (btnType == "simulator") {
+		return <Register />;
+	} else if (btnType == "chart") {
+		return <Chart />;
+	} else if (btnType == "fxRate") {
+		return <Register />;
+	}
+	return <HomeItem />
+}
 
 export default function Home() {
+	let btnType = "calendar";
 
 	return (
 		<Box style={styles.container}>
@@ -14,7 +30,7 @@ export default function Home() {
 				<ActionButton />
 			</Box>
 			<Box style={styles.transactions}>
-				<HomeItem />
+				<SelectedItem />
 			</Box>
 		</Box>
 	);

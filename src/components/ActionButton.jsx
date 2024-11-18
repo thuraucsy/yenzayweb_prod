@@ -4,13 +4,12 @@ import { EventTwoTone, CalculateTwoTone, TimelineTwoTone, CurrencyExchangeTwoTon
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import dayjs from 'dayjs';
 
 import { useApp } from "../ThemedApp";
-import { queryClient } from "../ThemedApp";
-
-import { useNavigate } from "react-router-dom";
 
 function ButtonField(props) {
+    const { btnType, setBtnType } = useApp();
     const {
         setOpen,
         label,
@@ -28,22 +27,32 @@ function ButtonField(props) {
             disabled={disabled}
             ref={ref}
             aria-label={ariaLabel}
-            onClick={() => setOpen?.((prev) => !prev)}
+            onClick={() => {
+                /** only set the calendar type if not */
+                if (btnType != "calendar") {
+                    setBtnType("calendar");
+                } else {
+                    setOpen?.((prev) => !prev)
+                }
+            }}
         >
             <EventTwoTone style={styles.svgButton} />
         </IconButton>
     );
 }
 
-function ButtonDatePicker(props) {
-    const { open, setOpen } = useApp();
-    const { calendarValue, setCalendarValue } = useApp();
+function ButtonDatePicker() {
+    const { open, setOpen, calendarValue, setCalendarValue } = useApp();
+    const minDate = dayjs('2020/02/15').add(1, 'day');
 
     return (
         <DatePicker
             displayWeekNumber
-            slots={{ ...props.slots, field: ButtonField }}
-            slotProps={{ ...props.slotProps, field: { setOpen } }}
+            minDate={minDate}
+            slots={{ field: ButtonField }}
+            slotProps={{ field: { setOpen }, actionBar: {
+                actions: ['cancel', 'today', 'accept'],
+              }, }}
             label={calendarValue == null ? null : calendarValue.format('YYYY/MM/DD')}
             value={calendarValue}
             onAccept={(newValue) => {
@@ -58,8 +67,7 @@ function ButtonDatePicker(props) {
 }
 
 export default function ActionButton({ color, icon, label, path }) {
-    const navigate = useNavigate();
-    const { calendarValue } = useApp();
+    const { calendarValue, setBtnType } = useApp();
 
     return (
         <Box style={styles.actions}>
@@ -74,7 +82,7 @@ export default function ActionButton({ color, icon, label, path }) {
 
             <Box style={styles.actionButtonGroup}>
                 <IconButton style={{ ...styles.actionButton, ...styles.actionButton.color.scan }} onClick={() => {
-                    navigate("/register");
+                    setBtnType("simulator");
                 }}>
                     <CalculateTwoTone style={styles.svgButton} />
                 </IconButton>
@@ -83,7 +91,9 @@ export default function ActionButton({ color, icon, label, path }) {
                 </Typography>
             </Box>
             <Box style={styles.actionButtonGroup}>
-                <IconButton style={{ ...styles.actionButton, ...styles.actionButton.color.rate }}>
+                <IconButton style={{ ...styles.actionButton, ...styles.actionButton.color.rate }} onClick={() => {
+                    setBtnType("chart");
+                }}>
                     <TimelineTwoTone style={styles.svgButton} />
                 </IconButton>
                 <Typography style={styles.text.actionText}>
@@ -91,7 +101,9 @@ export default function ActionButton({ color, icon, label, path }) {
                 </Typography>
             </Box>
             <Box style={styles.actionButtonGroup}>
-                <IconButton style={styles.actionButton}>
+                <IconButton style={styles.actionButton} onClick={() => {
+                    setBtnType("fxRate");
+                }}>
                     <CurrencyExchangeTwoTone style={styles.svgButton} />
                 </IconButton>
                 <Typography style={styles.text.actionText}>
