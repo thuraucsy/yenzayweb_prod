@@ -20,8 +20,6 @@ function SelectedItem() {
 }
 
 export default function Home() {
-	let btnType = "calendar";
-
 	return (
 		<Box style={styles.container}>
 			<Box style={styles.background} />
