@@ -23,6 +23,13 @@ export function useApp() {
 	return useContext(AppContext);
 }
 
+export function setLocalStorage(yData, setYData, field, value) {
+	const yData_ = { ...yData };
+	yData_[field] = value;
+	setYData(yData_);
+	localStorage.setItem("yData", JSON.stringify(yData_));
+}
+
 const router = createBrowserRouter([
 	{
 		path: "/",
@@ -61,6 +68,23 @@ const router = createBrowserRouter([
 ]);
 
 export default function ThemedApp() {
+	const localYData = localStorage.getItem("yData") ? JSON.parse(localStorage.getItem("yData")) : {
+		version: 1,
+		y2k: {
+			formattedValue: "¥10,000",
+			value: "10000",
+			floatValue: 10000
+		},
+		k2y: {
+			formattedValue: "¥100,000",
+			value: "100000",
+			floatValue: 100000
+		},
+		yitem: {},
+		yenOrGoldToggle: "yen",
+		btnType: "calendar",
+	};
+
 	const [showDrawer, setShowDrawer] = useState(false);
 	const [showForm, setShowForm] = useState(false);
 	const [globalMsg, setGlobalMsg] = useState(null);
@@ -68,7 +92,9 @@ export default function ThemedApp() {
 	const [mode, setMode] = useState("light");
 	const [calendarValue, setCalendarValue] = useState(null);
 	const [open, setOpen] = useState(false);
-	const [btnType, setBtnType] = useState("calendar");
+	const [btnType, setBtnType] = useState(localYData.btnType);
+	const [preferMethod, setPreferMethod] = useState("y2k"); /** y2k or k2y */
+	const [yData, setYData] = useState(localYData);
 
 	const theme = useMemo(() => {
 		return createTheme({
@@ -103,6 +129,10 @@ export default function ThemedApp() {
 					setOpen,
 					btnType,
 					setBtnType,
+					preferMethod,
+					setPreferMethod,
+					yData,
+					setYData,
 				}}>
 				<QueryClientProvider client={queryClient}>
 					<RouterProvider router={router} />

@@ -1,8 +1,9 @@
 import { Box } from "@mui/material";
 
-import SimulationCard from "../components/SimulationCard";
+import SimulationResult from "../components/SimulationResult";
 import ActionButton from "../components/ActionButton";
-import HomeItem from "../components/HomeItem";
+import Calendar from "../components/Calendar";
+import Simulator from "../components/Simulator";
 import Chart from "./Chart";
 import Register from "./Register";
 import { useApp } from "../ThemedApp";
@@ -10,20 +11,20 @@ import { useApp } from "../ThemedApp";
 function SelectedItem() {
 	const { btnType } = useApp();
 	if (btnType == "simulator") {
-		return <Register />;
+		return <Simulator />;
 	} else if (btnType == "chart") {
 		return <Chart />;
 	} else if (btnType == "fxRate") {
 		return <Register />;
 	}
-	return <HomeItem />
+	return <Calendar />
 }
 
 export default function Home() {
 	return (
 		<Box style={styles.container}>
 			<Box style={styles.background} />
-			<SimulationCard />
+			<SimulationResult />
 			<Box>
 				<ActionButton />
 			</Box>

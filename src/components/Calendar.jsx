@@ -1,11 +1,11 @@
 import { Box, Typography, Alert } from "@mui/material";
-import Item from "../components/YItem";
+import Item from "./YItem";
 import { useApp } from "../ThemedApp";
 import { useQuery } from "react-query";
 
 const api = import.meta.env.VITE_YENZAY_API;
 
-export default function HomeItem() {
+export default function Calendar() {
 
     const { calendarValue } = useApp();
 
@@ -44,7 +44,7 @@ export default function HomeItem() {
 
     return (
         <Box>
-            <Typography style={{ ...styles.text.label, ...styles.text.label.SimulationCard }}>{data.Items[0].YearMonth}/{data.Items[0].DayTime}</Typography>
+            <Typography style={{ ...styles.text.label, ...styles.text.label.SimulationResult }}>{data.Items[0].YearMonth}/{data.Items[0].DayTime}</Typography>
             <Typography style={styles.text.label}>{data.Items[0].YearMonth}/{data.Items[0].DayTime.split(` `)[0]}</Typography>
 
             {
@@ -72,7 +72,7 @@ const styles = {
             top: 120,
             zIndex: 20,
             textAlign: "center",
-            SimulationCard: {
+            SimulationResult: {
                 color: "#aaa",
                 position: "fixed",
                 top: 120,

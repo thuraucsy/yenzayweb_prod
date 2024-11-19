@@ -1,7 +1,7 @@
 import { Typography, Box } from "@mui/material";
 import YenOrGoldButton from "./YenOrGoldButton";
 
-export default function SimulationCard() {
+export default function SimulationResult() {
     return (
         <Box style={styles.banner}>
             <Box>

@@ -1,3 +1,10 @@
 - fix not exist date err //
 - filter monthly call api //
 - animation for calendar yen zay list
+- double tap simulator btn and switch btn in simulator page
+yData: {
+    y2k: 10000,
+    k2y: 100000,
+    yitem: {},
+    yenOrGoldToggle: "yen",
+}
