@@ -6,7 +6,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 
-import { useApp, setLocalStorage } from "../ThemedApp";
+import { useApp, setLocalStorageYData } from "../ThemedApp";
 
 function ButtonField(props) {
     const { btnType, setBtnType, yData, setYData } = useApp();
@@ -31,7 +31,7 @@ function ButtonField(props) {
                 /** only set the calendar type if not */
                 if (btnType != "calendar") {
                     setBtnType("calendar");
-                    setLocalStorage(yData, setYData, "btnType", "calendar");
+                    setLocalStorageYData(yData, setYData, "btnType", "calendar");
                 } else {
                     setOpen?.((prev) => !prev)
                 }
@@ -84,7 +84,7 @@ export default function ActionButton({ color, icon, label, path }) {
             <Box style={styles.actionButtonGroup}>
                 <IconButton style={{ ...styles.actionButton, ...styles.actionButton.color.scan }} onClick={() => {
                     setBtnType("simulator");
-                    setLocalStorage(yData, setYData, "btnType", "simulator");
+                    setLocalStorageYData(yData, setYData, "btnType", "simulator");
                 }}>
                     <CalculateTwoTone style={styles.svgButton} />
                 </IconButton>
@@ -95,7 +95,7 @@ export default function ActionButton({ color, icon, label, path }) {
             <Box style={styles.actionButtonGroup}>
                 <IconButton style={{ ...styles.actionButton, ...styles.actionButton.color.rate }} onClick={() => {
                     setBtnType("chart");
-                    setLocalStorage(yData, setYData, "btnType", "chart");
+                    setLocalStorageYData(yData, setYData, "btnType", "chart");
                 }}>
                     <TimelineTwoTone style={styles.svgButton} />
                 </IconButton>
@@ -106,7 +106,7 @@ export default function ActionButton({ color, icon, label, path }) {
             <Box style={styles.actionButtonGroup}>
                 <IconButton style={styles.actionButton} onClick={() => {
                     setBtnType("fxRate");
-                    setLocalStorage(yData, setYData, "btnType", "fxRate");
+                    setLocalStorageYData(yData, setYData, "btnType", "fxRate");
                 }}>
                     <CurrencyExchangeTwoTone style={styles.svgButton} />
                 </IconButton>

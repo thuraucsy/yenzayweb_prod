@@ -1,6 +1,6 @@
 import CurrencyField from "../components/CurrencyField";
 import { Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Box, FormGroup } from '@mui/material';
-import { setLocalStorage, useApp } from "../ThemedApp";
+import { setLocalStorageYData, useApp } from "../ThemedApp";
 
 export default function Simulator() {
     const { preferMethod, setPreferMethod, yData, setYData } = useApp();
@@ -29,13 +29,13 @@ export default function Simulator() {
                     <CurrencyField props={{
                         label: "¥ ➡︎ K", prefix: "¥", disabled: preferMethod != "y2k", value: yData.y2k.value, 
                         onValueChange: (value) => {
-                            setLocalStorage(yData, setYData, "y2k", value);
+                            setLocalStorageYData(yData, setYData, "y2k", value);
                         }
                     }} />
                     <CurrencyField props={{
                         label: "K ➡︎ ¥", prefix: "K", disabled: preferMethod != "k2y", value: yData.k2y.value, 
                         onValueChange: (value) => {
-                            setLocalStorage(yData, setYData, "k2y", value);
+                            setLocalStorageYData(yData, setYData, "k2y", value);
                         }
                     }} />
                 </FormGroup>

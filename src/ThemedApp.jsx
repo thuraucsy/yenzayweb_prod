@@ -23,7 +23,7 @@ export function useApp() {
 	return useContext(AppContext);
 }
 
-export function setLocalStorage(yData, setYData, field, value) {
+export function setLocalStorageYData(yData, setYData, field, value) {
 	const yData_ = { ...yData };
 	yData_[field] = value;
 	setYData(yData_);
