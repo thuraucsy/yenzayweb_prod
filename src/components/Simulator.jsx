@@ -3,10 +3,10 @@ import { Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Box, FormG
 import { setLocalStorageYData, useApp } from "../ThemedApp";
 
 export default function Simulator() {
-    const { preferMethod, setPreferMethod, yData, setYData } = useApp();
+    const { yData, setYData } = useApp();
 
     const handleChange = (event) => {
-        setPreferMethod(event.target.value);
+        setLocalStorageYData(yData, setYData, "simulator.preferMethod", event.target.value);
     };
 
     return (
@@ -19,23 +19,23 @@ export default function Simulator() {
                 <RadioGroup
                     row
                 >
-                    <FormControlLabel value="y2k" checked={preferMethod === "y2k"} onChange={handleChange} control={<Radio />} label="¥ ➡︎ K" />
-                    <FormControlLabel value="k2y" checked={preferMethod === "k2y"} onChange={handleChange} control={<Radio />} label="K ➡︎ ¥" />
+                    <FormControlLabel value="y2k" checked={yData.simulator.preferMethod === "y2k"} onChange={handleChange} control={<Radio />} label="¥ ➡︎ K" />
+                    <FormControlLabel value="k2y" checked={yData.simulator.preferMethod === "k2y"} onChange={handleChange} control={<Radio />} label="K ➡︎ ¥" />
                 </RadioGroup>
 
                 <FormGroup sx={{
                     paddingTop: 2,
                 }}>
                     <CurrencyField props={{
-                        label: "¥ ➡︎ K", prefix: "¥", disabled: preferMethod != "y2k", value: yData.y2k.value, 
+                        label: "¥ ➡︎ K", prefix: "¥", disabled: yData.simulator.preferMethod != "y2k", value: yData.simulator.y2k.value, 
                         onValueChange: (value) => {
-                            setLocalStorageYData(yData, setYData, "y2k", value);
+                            setLocalStorageYData(yData, setYData, "simulator.y2k", value);
                         }
                     }} />
                     <CurrencyField props={{
-                        label: "K ➡︎ ¥", prefix: "K", disabled: preferMethod != "k2y", value: yData.k2y.value, 
+                        label: "K ➡︎ ¥", prefix: "K", disabled: yData.simulator.preferMethod != "k2y", value: yData.simulator.k2y.value, 
                         onValueChange: (value) => {
-                            setLocalStorageYData(yData, setYData, "k2y", value);
+                            setLocalStorageYData(yData, setYData, "simulator.k2y", value);
                         }
                     }} />
                 </FormGroup>
