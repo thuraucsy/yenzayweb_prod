@@ -1,11 +1,10 @@
 import { Card, ListItem, ListItemText, IconButton } from "@mui/material";
 import { ArrowCircleUp as ArrowCircleUpIcon } from "@mui/icons-material";
 import { styled } from '@mui/material/styles';
-
-import { useNavigate } from "react-router-dom";
+import { useApp } from "../ThemedApp";
 
 export default function Item({ item }) {
-	const navigate = useNavigate();
+	const { setYItem } = useApp();
 
 	const CustomButton = styled(IconButton)({
 		"&:hover": {
@@ -18,7 +17,7 @@ export default function Item({ item }) {
 
 			<ListItem secondaryAction={
 				<CustomButton onClick={(e) => {
-					console.log("arrow click", item)
+					setYItem(item);
 				}}>
 					<ArrowCircleUpIcon />
 				</CustomButton>

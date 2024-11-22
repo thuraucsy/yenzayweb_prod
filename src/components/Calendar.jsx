@@ -7,11 +7,11 @@ const api = import.meta.env.VITE_YENZAY_API;
 
 export default function Calendar() {
 
-    const { calendarValue } = useApp();
+    const { calendarValue, setYItem } = useApp();
+    let apiUrl = `${api}/day/today.json`;
 
     const { isLoading, isError, error, data } = useQuery(["yenzay", calendarValue], async ({ queryKey }) => {
-        const [_, calendarValue] = queryKey
-        let apiUrl = `${api}/day/today.json`;
+        const [_, calendarValue] = queryKey;
 
         /** calendarValue change && not today date */
         if (calendarValue && calendarValue.format("YYYY/MM/DD") !== new Date().toLocaleDateString("ja-JP", {
@@ -30,6 +30,11 @@ export default function Calendar() {
         data.Items = data.Items.filter(x => x.DayTime.indexOf(`${calendarValue.format("DD ")}`) > -1);
     }
 
+    let dataItems = [];
+    if (data && data.Items) {
+        dataItems = data.Items.slice().reverse();
+    }
+
     if (isLoading) {
         return <Box style={styles.error}>Loading...</Box>
     }
@@ -44,11 +49,11 @@ export default function Calendar() {
 
     return (
         <Box>
-            <Typography style={{ ...styles.text.label, ...styles.text.label.SimulationResult }}>{data.Items[0].YearMonth}/{data.Items[0].DayTime}</Typography>
-            <Typography style={styles.text.label}>{data.Items[0].YearMonth}/{data.Items[0].DayTime.split(` `)[0]}</Typography>
+            <Typography style={{ ...styles.text.label, ...styles.text.label.SimulationResult }}>{dataItems[0].YearMonth}/{data.Items[0].DayTime}</Typography>
+            <Typography style={styles.text.label}>{dataItems[0].YearMonth}/{dataItems[0].DayTime.split(` `)[0]}</Typography>
 
             {
-                data.Items.slice().reverse().map(item => {
+                dataItems.map(item => {
                     return (
                         <Item
                             key={item.YearMonth + item.DayTime}

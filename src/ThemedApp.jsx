@@ -77,7 +77,6 @@ export default function ThemedApp() {
 		version: 1,
 		yenOrGoldToggle: "yen",
 		btnType: "calendar",
-		yitem: {},
 		simulator: {
 			preferMethod: "y2k", /** y2k or k2y */
 			y2k: {
@@ -102,6 +101,7 @@ export default function ThemedApp() {
 	const [open, setOpen] = useState(false);
 	const [btnType, setBtnType] = useState(localYData.btnType);
 	const [yData, setYData] = useState(localYData);
+	const [yItem, setYItem] = useState({});
 
 	const theme = useMemo(() => {
 		return createTheme({
@@ -138,6 +138,8 @@ export default function ThemedApp() {
 					setBtnType,
 					yData,
 					setYData,
+					yItem, 
+					setYItem,
 				}}>
 				<QueryClientProvider client={queryClient}>
 					<RouterProvider router={router} />
