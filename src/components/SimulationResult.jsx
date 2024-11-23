@@ -3,11 +3,34 @@ import YenOrGoldButton from "./YenOrGoldButton";
 import { useApp } from "../ThemedApp";
 import { useQuery } from "react-query";
 import { useEffect } from "react";
+import { getCurrencyFormatter } from "../ThemedApp";
 
 const api = import.meta.env.VITE_YENZAY_API;
 
+function CalculatedResult({ yItem, yData }) {
+    if (yData.simulator.preferMethod === "k2y") {
+        // yData.simulator.k2y.value
+        return (
+            <Box style={styles.balance}>
+                <Typography style={styles.text.label}>¥</Typography>
+                <Typography style={styles.text.amount}>{yItem ? getCurrencyFormatter((Number(yData.simulator.k2y.value) / Number(yItem.MMKRatePerYen))) : ""}</Typography>
+                <Typography style={styles.text.label}>/&nbsp;&nbsp;K{yItem ? getCurrencyFormatter(yData.simulator.k2y.value) : ""}</Typography>
+            </Box>
+        );
+    }
+
+
+    return (
+        <Box style={styles.balance}>
+            <Typography style={styles.text.label}>K</Typography>
+            <Typography style={styles.text.amount}>{yItem ? getCurrencyFormatter((Number(yData.simulator.y2k.value) * Number(yItem.MMKRatePerYen))) : ""}</Typography>
+            <Typography style={styles.text.label}>/&nbsp;&nbsp;¥{yItem ? getCurrencyFormatter(yData.simulator.y2k.value) : ""}</Typography>
+        </Box>
+    );
+}
+
 export default function SimulationResult() {
-    const { yItem, setYItem } = useApp();
+    const { yItem, setYItem, yData } = useApp();
     let apiUrl = `${api}/day/today.json`;
     const { isLoading, isError, error, data } = useQuery("yenzay", async () => {
         const res = await fetch(apiUrl);
@@ -26,15 +49,13 @@ export default function SimulationResult() {
         <Box style={styles.banner}>
             <Box>
                 <Typography style={styles.text.label}>Simulation Result</Typography>
-                <Box style={styles.balance} sx={{
-                    display: "flex",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                }}>
-                    <Typography style={styles.text.label}>¥</Typography>
-                    <Typography style={styles.text.amount}>{yItem ? yItem.MMKRatePerYen : ""}</Typography>
-                    <Typography style={styles.text.label}>/&nbsp;&nbsp;K{yItem ? yItem.DayTime : ""}</Typography>
-                </Box>
+
+                <CalculatedResult yItem={yItem} yData={yData} />
+                <Typography sx={{
+                    fontWeight: "bold",
+                    fontStyle: "italic",
+                    color: "#aaa"
+                }}>{yItem.YearMonth}/{yItem.DayTime}</Typography>
             </Box>
             <Box style={styles.yenOrGold}>
                 <YenOrGoldButton />
@@ -61,6 +82,8 @@ const styles = {
         flexDirection: "row",
         gap: 10,
         alignItems: "center",
+        display: "flex",
+        justifyContent: "space-between",
     },
     yenOrGold: {
         alignItems: "flex-end",

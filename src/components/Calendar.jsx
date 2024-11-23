@@ -49,7 +49,6 @@ export default function Calendar() {
 
     return (
         <Box>
-            <Typography style={{ ...styles.text.label, ...styles.text.label.SimulationResult }}>{dataItems[0].YearMonth}/{data.Items[0].DayTime}</Typography>
             <Typography style={styles.text.label}>{dataItems[0].YearMonth}/{dataItems[0].DayTime.split(` `)[0]}</Typography>
 
             {
@@ -74,17 +73,9 @@ const styles = {
             color: "rgb(249 19 161)",
             paddingBottom: 6,
             position: "sticky",
-            top: 120,
+            top: 126,
             zIndex: 20,
-            textAlign: "center",
-            SimulationResult: {
-                color: "#aaa",
-                position: "fixed",
-                top: 120,
-                left: 46,
-                right: 0,
-                margin: "auto",
-            }
+            textAlign: "right",
         },
     },
     error: {

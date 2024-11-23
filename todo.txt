@@ -8,3 +8,5 @@ yData: {
     yitem: {},
     yenOrGoldToggle: "yen",
 }
+- same yen zay > hide set btn
+- font diff for reate changes

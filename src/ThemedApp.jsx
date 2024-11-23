@@ -14,6 +14,7 @@ import Chart from "./pages/Chart";
 import Likes from "./pages/Likes";
 import Profile from "./pages/Profile";
 import Comments from "./pages/Comments";
+import { numericFormatter } from "react-number-format";
 
 const AppContext = createContext();
 
@@ -21,6 +22,11 @@ export const queryClient = new QueryClient();
 
 export function useApp() {
 	return useContext(AppContext);
+}
+
+export function getCurrencyFormatter(currencyNum) {
+	currencyNum = currencyNum.toString(); /** numericFormatter only accept string */
+	return numericFormatter(currencyNum, {thousandSeparator: true, decimalScale: 0});
 }
 
 export function setLocalStorageYData(yData, setYData, field, value) {
