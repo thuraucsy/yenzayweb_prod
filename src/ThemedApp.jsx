@@ -8,12 +8,6 @@ import { QueryClientProvider, QueryClient } from "react-query";
 
 import Template from "./Template";
 import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Chart from "./pages/Chart";
-import Likes from "./pages/Likes";
-import Profile from "./pages/Profile";
-import Comments from "./pages/Comments";
 import { numericFormatter } from "react-number-format";
 
 const AppContext = createContext();
@@ -49,30 +43,6 @@ const router = createBrowserRouter([
 			{
 				path: "/",
 				element: <Home />,
-			},
-			{
-				path: "/Chart",
-				element: <Chart />,
-			},
-			{
-				path: "/login",
-				element: <Login />,
-			},
-			{
-				path: "/register",
-				element: <Register />,
-			},
-			{
-				path: "/comments/:id",
-				element: <Comments />,
-			},
-			{
-				path: "/profile/:id",
-				element: <Profile />,
-			},
-			{
-				path: "/likes/:id",
-				element: <Likes />,
 			},
 		],
 	},

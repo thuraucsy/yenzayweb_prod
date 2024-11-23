@@ -10,3 +10,5 @@ yData: {
 }
 - same yen zay > hide set btn
 - font diff for reate changes
+- desktop site max width
+- simulator input validation
