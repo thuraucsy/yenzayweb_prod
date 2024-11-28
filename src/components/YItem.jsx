@@ -1,11 +1,12 @@
-import { Card, ListItem, ListItemText, IconButton, Slide } from "@mui/material";
+import { Card, ListItem, ListItemText, IconButton, Slide, Box, ListItemIcon } from "@mui/material";
+import StarIcon from '@mui/icons-material/Star';
 import { ArrowCircleUp as ArrowCircleUpIcon } from "@mui/icons-material";
 import { styled } from '@mui/material/styles';
 import { useApp } from "../ThemedApp";
 import { getCurrencyFormatter } from "../ThemedApp";
 
-export default function Item({ item }) {
-	const { setYItem, setGlobalMsg } = useApp();
+export default function Item({ item, prevItem }) {
+	const { setYItem, setGlobalMsg, yItem } = useApp();
 
 	const CustomButton = styled(IconButton)({
 		"&:hover": {
@@ -18,15 +19,15 @@ export default function Item({ item }) {
 
 			<Card sx={{ mb: 2 }}>
 
-				<ListItem secondaryAction={
+				<ListItem secondaryAction={yItem.MMKRatePerYen !== item.MMKRatePerYen ?
 					<CustomButton onClick={(e) => {
 						setYItem(item);
 						setGlobalMsg("Simulation Result updated")
 					}}>
 						<ArrowCircleUpIcon />
-					</CustomButton>
+					</CustomButton> : <Box />
 				}>
-					<ListItemText
+					<ListItemText style={(prevItem && prevItem.MMKRatePerYen !== item.MMKRatePerYen) ? styles.changedStyle : null}
 						primary={`K${item.MMKRatePerYen} /¥   (or)   ¥${getCurrencyFormatter(100000 / item.MMKRatePerYen)} /1lakh`}
 						secondary={`${item.YearMonth.split("/")[1]}/${item.DayTime}`}
 					/>
@@ -34,4 +35,11 @@ export default function Item({ item }) {
 			</Card>
 		</Slide>
 	);
+}
+
+const styles = {
+    changedStyle: {
+		fontWeight: "bold",
+		color: "rgb(249, 19, 161)",
+	}
 }

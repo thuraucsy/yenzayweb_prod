@@ -52,11 +52,12 @@ export default function Calendar() {
             <Typography style={styles.text.label}>{dataItems[0].YearMonth}/{dataItems[0].DayTime.split(` `)[0]}</Typography>
 
             {
-                dataItems.map(item => {
+                dataItems.map((item, i, array) => {
                     return (
                         <Item
                             key={item.YearMonth + item.DayTime}
                             item={item}
+                            prevItem={array[i - 1]}
                         />
                     );
                 })
