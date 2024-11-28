@@ -3,7 +3,6 @@ import { NumericFormat } from "react-number-format";
 import { TextField } from "@mui/material"
 
 export default function CurrencyField({ props }) {
-    // const [displayValue, setDisplayValue] = useState();
 
     return (
         <NumericFormat style={styles.numericFormat}
@@ -13,6 +12,11 @@ export default function CurrencyField({ props }) {
             sx={{ width: '30ch' }}
             thousandSeparator=","
             {...props}
+            type="tel"
+            isAllowed={(values) => {
+                const { floatValue } = values;
+                return !floatValue || floatValue >= 0 && floatValue <= 999999999;
+            }}
         />
     );
 }

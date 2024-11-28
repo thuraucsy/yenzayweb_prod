@@ -57,9 +57,9 @@ export default function SimulationResult() {
                     color: "#aaa"
                 }}>{yItem.YearMonth}/{yItem.DayTime} ({yItem.MMKRatePerYen})</Typography>
             </Box>
-            <Box style={styles.yenOrGold}>
+            {/* <Box style={styles.yenOrGold}>
                 <YenOrGoldButton />
-            </Box>
+            </Box> */}
         </Box>
     );
 }

@@ -65,6 +65,10 @@ export default function ThemedApp() {
 				value: "100000",
 				floatValue: 100000
 			},
+			atmFeeCheck: false,
+			remitFeeCheck: false,
+			atmType: "lawson",
+
 		},
 	};
 
