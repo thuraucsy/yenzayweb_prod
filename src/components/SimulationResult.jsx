@@ -55,7 +55,7 @@ export default function SimulationResult() {
                     fontWeight: "bold",
                     fontStyle: "italic",
                     color: "#aaa"
-                }}>{yItem.YearMonth}/{yItem.DayTime}</Typography>
+                }}>{yItem.YearMonth}/{yItem.DayTime} ({yItem.MMKRatePerYen})</Typography>
             </Box>
             <Box style={styles.yenOrGold}>
                 <YenOrGoldButton />

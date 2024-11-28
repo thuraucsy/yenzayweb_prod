@@ -1,10 +1,11 @@
-import { Card, ListItem, ListItemText, IconButton } from "@mui/material";
+import { Card, ListItem, ListItemText, IconButton, Slide } from "@mui/material";
 import { ArrowCircleUp as ArrowCircleUpIcon } from "@mui/icons-material";
 import { styled } from '@mui/material/styles';
 import { useApp } from "../ThemedApp";
+import { getCurrencyFormatter } from "../ThemedApp";
 
 export default function Item({ item }) {
-	const { setYItem } = useApp();
+	const { setYItem, setGlobalMsg } = useApp();
 
 	const CustomButton = styled(IconButton)({
 		"&:hover": {
@@ -13,20 +14,24 @@ export default function Item({ item }) {
 	});
 
 	return (
-		<Card sx={{ mb: 2 }}>
+		<Slide direction="up" in={true} mountOnEnter unmountOnExit>
 
-			<ListItem secondaryAction={
-				<CustomButton onClick={(e) => {
-					setYItem(item);
-				}}>
-					<ArrowCircleUpIcon />
-				</CustomButton>
-			}>
-				<ListItemText
-					primary={`K${item.MMKRatePerYen} /¥   (or)   ¥${Math.round(100000 / item.MMKRatePerYen)} /1lakh`}
-					secondary={`${item.YearMonth.split("/")[1]}/${item.DayTime}`}
-				/>
-			</ListItem>
-		</Card>
+			<Card sx={{ mb: 2 }}>
+
+				<ListItem secondaryAction={
+					<CustomButton onClick={(e) => {
+						setYItem(item);
+						setGlobalMsg("Simulation Result updated")
+					}}>
+						<ArrowCircleUpIcon />
+					</CustomButton>
+				}>
+					<ListItemText
+						primary={`K${item.MMKRatePerYen} /¥   (or)   ¥${getCurrencyFormatter(100000 / item.MMKRatePerYen)} /1lakh`}
+						secondary={`${item.YearMonth.split("/")[1]}/${item.DayTime}`}
+					/>
+				</ListItem>
+			</Card>
+		</Slide>
 	);
 }

@@ -17,7 +17,7 @@ export default function Template() {
                     vertical: "bottom",
                 }}
                 open={Boolean(globalMsg)}
-                autoHideDuration={6000}
+                autoHideDuration={3000}
                 onClose={() => setGlobalMsg(null)}
                 message={globalMsg}
             />
