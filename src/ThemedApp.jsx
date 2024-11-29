@@ -68,6 +68,11 @@ export default function ThemedApp() {
 			atmFeeCheck: false,
 			remitFeeCheck: false,
 			atmType: "lawson",
+			sbiPricingObj: {
+                "lawson": "",
+                "yucho": "",
+                "remit": "",
+			}
 
 		},
 	};
