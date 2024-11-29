@@ -3,7 +3,7 @@ import { Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Box, FormG
 import { setLocalStorageYData, useApp, getCurrencyFormatter } from "../ThemedApp";
 
 export default function Simulator() {
-    const { yData, setYData } = useApp();
+    const { yData, setYData, yItem } = useApp();
 
     const sbiPricing = {
         "10000": {
@@ -29,6 +29,7 @@ export default function Simulator() {
     };
 
     const calculateHandingCharges = (amount) => {
+        // console.log("amount", amount);
         if (!amount) {
             return {
                 "lawson": "",
@@ -40,7 +41,7 @@ export default function Simulator() {
         return sbiPricing[foundPricingAmt];
     };
 
-    const handlingChargesFeeLabel = (label) => {
+    const handlingChargesLabel = (label) => {
         if (!yData.simulator.sbiPricingObj || !yData.simulator.sbiPricingObj.lawson || !yData.simulator.sbiPricingObj.yucho || !yData.simulator.sbiPricingObj.remit) {
             return "";
         }
@@ -52,8 +53,37 @@ export default function Simulator() {
         return `(¥${yData.simulator.atmType === "lawson" ? getCurrencyFormatter(yData.simulator.sbiPricingObj.lawson) : getCurrencyFormatter(yData.simulator.sbiPricingObj.yucho)})`;
     }
 
-    const handleChange = (event) => {
+    const preferMethodChange = (event) => {
         setLocalStorageYData(yData, setYData, "simulator.preferMethod", event.target.value);
+        if (event.target.value == "y2k") {
+            y2kChange(yData.simulator.y2k);
+        } else {
+            k2yChange(yData.simulator.k2y);
+        }
+    };
+
+    const y2kChange = (value) => {
+        setLocalStorageYData(yData, setYData, "simulator.y2k", value);
+        setLocalStorageYData(yData, setYData, "simulator.sbiPricingObj", calculateHandingCharges(value.value));
+    };
+
+    const k2yChange = (value) => {
+        setLocalStorageYData(yData, setYData, "simulator.k2y", value);
+        const yenAmt = Math.floor(value.value / yItem.MMKRatePerYen);
+        let sbiPricingObj = calculateHandingCharges(yenAmt);
+        console.log("sbiPricingObj1", sbiPricingObj)
+        
+        if (sbiPricingObj.lawson) {
+            let atmFee = sbiPricingObj.yucho;
+            if (yData.simulator.atmType === "lawson") {
+                atmFee = sbiPricingObj.lawson;
+            }
+            const handlingCharges = sbiPricingObj.remit + atmFee;
+            sbiPricingObj = calculateHandingCharges(yenAmt + handlingCharges);
+            console.log("sbiPricingObj2", sbiPricingObj)
+            
+            setLocalStorageYData(yData, setYData, "simulator.sbiPricingObj", sbiPricingObj);
+        }
     };
 
     return (
@@ -66,8 +96,8 @@ export default function Simulator() {
                 <RadioGroup
                     row
                 >
-                    <FormControlLabel value="y2k" checked={yData.simulator.preferMethod === "y2k"} onChange={handleChange} control={<Radio />} label="¥ ➡︎ K" />
-                    <FormControlLabel value="k2y" checked={yData.simulator.preferMethod === "k2y"} onChange={handleChange} control={<Radio />} label="K ➡︎ ¥" />
+                    <FormControlLabel value="y2k" checked={yData.simulator.preferMethod === "y2k"} onChange={preferMethodChange} control={<Radio />} label="¥ ➡︎ K" />
+                    <FormControlLabel value="k2y" checked={yData.simulator.preferMethod === "k2y"} onChange={preferMethodChange} control={<Radio />} label="K ➡︎ ¥" />
                 </RadioGroup>
 
                 <FormGroup sx={{
@@ -79,10 +109,7 @@ export default function Simulator() {
                             return !floatValue || floatValue >= 0 && floatValue <= 99999999;
                         },
                         label: "¥ ➡︎ K", prefix: "¥", disabled: yData.simulator.preferMethod != "y2k", value: yData.simulator.y2k.value,
-                        onValueChange: (value) => {
-                            setLocalStorageYData(yData, setYData, "simulator.y2k", value);
-                            setLocalStorageYData(yData, setYData, "simulator.sbiPricingObj", calculateHandingCharges(value.value));
-                        },
+                        onValueChange: y2kChange,
                     }} />
                     <CurrencyField props={{
                         isAllowed: (values) => {
@@ -90,13 +117,11 @@ export default function Simulator() {
                             return !floatValue || floatValue >= 0 && floatValue <= 999999999;
                         },
                         label: "K ➡︎ ¥", prefix: "K", disabled: yData.simulator.preferMethod != "k2y", value: yData.simulator.k2y.value,
-                        onValueChange: (value) => {
-                            setLocalStorageYData(yData, setYData, "simulator.k2y", value);
-                        }
+                        onValueChange: k2yChange
                     }} />
 
                     <FormLabel sx={{ pt: 3 }}>Handling Charges</FormLabel>
-                    <FormControlLabel control={<Checkbox checked={yData.simulator.atmFeeCheck ? true : false} />} label={`ATM fee ${handlingChargesFeeLabel("atm")}`} onChange={
+                    <FormControlLabel control={<Checkbox checked={yData.simulator.atmFeeCheck ? true : false} />} label={`ATM fee ${handlingChargesLabel("atm")}`} onChange={
                         (event) => {
                             setLocalStorageYData(yData, setYData, "simulator.atmFeeCheck", event.target.checked);
                         }
@@ -105,13 +130,18 @@ export default function Simulator() {
                     <RadioGroup row sx={{ pl: 3 }} value={yData.simulator.atmType ? yData.simulator.atmType : "lawson"} onChange={
                         (event) => {
                             setLocalStorageYData(yData, setYData, "simulator.atmType", event.target.value);
+                            if (yData.simulator.preferMethod == "y2k") {
+                                y2kChange(yData.simulator.y2k);
+                            } else {
+                                k2yChange(yData.simulator.k2y);
+                            }
                         }
                     }>
                         <FormControlLabel value="lawson" control={<Radio />} label="Lawson ATM" disabled={yData.simulator.atmFeeCheck ? false : true} />
                         <FormControlLabel value="yucho" control={<Radio />} label="Yūcho ATM" disabled={yData.simulator.atmFeeCheck ? false : true} />
                     </RadioGroup>
 
-                    <FormControlLabel control={<Checkbox checked={yData.simulator.remitFeeCheck ? true : false} />} label={`SBI Remit fee ${handlingChargesFeeLabel("remit")}`} onChange={
+                    <FormControlLabel control={<Checkbox checked={yData.simulator.remitFeeCheck ? true : false} />} label={`SBI Remit fee ${handlingChargesLabel("remit")}`} onChange={
                         (event) => {
                             setLocalStorageYData(yData, setYData, "simulator.remitFeeCheck", event.target.checked);
                         }

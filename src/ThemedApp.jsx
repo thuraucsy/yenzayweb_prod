@@ -19,6 +19,7 @@ export function useApp() {
 }
 
 export function getCurrencyFormatter(currencyNum) {
+	if (!currencyNum) { return ""; }
 	currencyNum = currencyNum.toString(); /** numericFormatter only accept string */
 	return numericFormatter(currencyNum, {thousandSeparator: true, decimalScale: 0});
 }
