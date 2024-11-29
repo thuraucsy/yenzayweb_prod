@@ -55,12 +55,16 @@ export default function Simulator() {
 
     const preferMethodChange = (event) => {
         setLocalStorageYData(yData, setYData, "simulator.preferMethod", event.target.value);
-        if (event.target.value == "y2k") {
+        updateY2KorK2Ychanges(event.target.value);
+    };
+
+    const updateY2KorK2Ychanges = (value) => {
+        if (value == "y2k") {
             y2kChange(yData.simulator.y2k);
         } else {
             k2yChange(yData.simulator.k2y);
         }
-    };
+    }
 
     const y2kChange = (value) => {
         setLocalStorageYData(yData, setYData, "simulator.y2k", value);
@@ -122,17 +126,14 @@ export default function Simulator() {
                     <FormControlLabel control={<Checkbox checked={yData.simulator.atmFeeCheck ? true : false} />} label={`ATM fee ${handlingChargesLabel("atm")}`} onChange={
                         (event) => {
                             setLocalStorageYData(yData, setYData, "simulator.atmFeeCheck", event.target.checked);
+                            updateY2KorK2Ychanges(yData.simulator.preferMethod);
                         }
                     } />
 
                     <RadioGroup row sx={{ pl: 3 }} value={yData.simulator.atmType ? yData.simulator.atmType : "lawson"} onChange={
                         (event) => {
                             setLocalStorageYData(yData, setYData, "simulator.atmType", event.target.value);
-                            if (yData.simulator.preferMethod == "y2k") {
-                                y2kChange(yData.simulator.y2k);
-                            } else {
-                                k2yChange(yData.simulator.k2y);
-                            }
+                            updateY2KorK2Ychanges(yData.simulator.preferMethod);
                         }
                     }>
                         <FormControlLabel value="lawson" control={<Radio />} label="Lawson ATM" disabled={yData.simulator.atmFeeCheck ? false : true} />
@@ -142,6 +143,7 @@ export default function Simulator() {
                     <FormControlLabel control={<Checkbox checked={yData.simulator.remitFeeCheck ? true : false} />} label={`SBI Remit fee ${handlingChargesLabel("remit")}`} onChange={
                         (event) => {
                             setLocalStorageYData(yData, setYData, "simulator.remitFeeCheck", event.target.checked);
+                            updateY2KorK2Ychanges(yData.simulator.preferMethod);
                         }
                     } />
 
