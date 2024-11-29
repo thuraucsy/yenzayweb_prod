@@ -61,7 +61,7 @@ export default function Simulator() {
                         }
                     } />
 
-                    <Alert severity="warning">Min transfer amount must be from ¥2,000 <Link href="#">Check SBI Pricing Detail</Link>
+                    <Alert severity="warning">Min transfer amount must be from ¥2,000 <Link href="/sbi_pricing2.jpg" target="_blank">Check SBI Pricing Detail</Link>
                     </Alert>
                 </FormGroup>
             </FormControl>
