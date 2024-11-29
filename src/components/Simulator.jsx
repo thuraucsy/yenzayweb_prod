@@ -71,7 +71,6 @@ export default function Simulator() {
         setLocalStorageYData(yData, setYData, "simulator.k2y", value);
         const yenAmt = Math.floor(value.value / yItem.MMKRatePerYen);
         let sbiPricingObj = calculateHandingCharges(yenAmt);
-        console.log("sbiPricingObj1", sbiPricingObj)
         
         if (sbiPricingObj.lawson) {
             let atmFee = sbiPricingObj.yucho;
@@ -80,7 +79,6 @@ export default function Simulator() {
             }
             const handlingCharges = sbiPricingObj.remit + atmFee;
             sbiPricingObj = calculateHandingCharges(yenAmt + handlingCharges);
-            console.log("sbiPricingObj2", sbiPricingObj)
             
             setLocalStorageYData(yData, setYData, "simulator.sbiPricingObj", sbiPricingObj);
         }
@@ -147,7 +145,7 @@ export default function Simulator() {
                         }
                     } />
 
-                    <Alert severity="warning">Min transfer amount must be from ¥2,000 <Link href="/sbi_pricing2.jpg" target="_blank">Check SBI Pricing Detail</Link>
+                    <Alert severity="warning">Min. transfer amount must be from ¥2,000 <Link href="/sbi_pricing2.jpg" target="_blank">Check SBI Pricing Detail</Link>
                     </Alert>
                 </FormGroup>
             </FormControl>

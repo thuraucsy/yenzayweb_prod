@@ -8,12 +8,21 @@ import { getCurrencyFormatter } from "../ThemedApp";
 const api = import.meta.env.VITE_YENZAY_API;
 
 function CalculatedResult({ yItem, yData }) {
+    let handlingFee = 0;
+    if (yData.simulator.atmFeeCheck) {
+        handlingFee += yData.simulator.sbiPricingObj[yData.simulator.atmType] ? Number(yData.simulator.sbiPricingObj[yData.simulator.atmType]) : 0;
+    }
+
+    if (yData.simulator.remitFeeCheck) {
+        handlingFee += yData.simulator.sbiPricingObj.remit ? Number(yData.simulator.sbiPricingObj.remit) : 0;
+    }
+
     if (yData.simulator.preferMethod === "k2y") {
         // yData.simulator.k2y.value
         return (
             <Box style={styles.balance}>
                 <Typography style={styles.text.label}>¥</Typography>
-                <Typography style={styles.text.amount}>{yItem ? getCurrencyFormatter((Number(yData.simulator.k2y.value) / Number(yItem.MMKRatePerYen))) : ""}</Typography>
+                <Typography style={styles.text.amount}>{yItem ? getCurrencyFormatter((Number(yData.simulator.k2y.value) / Number(yItem.MMKRatePerYen)) + handlingFee) : ""}</Typography>
                 <Typography style={styles.text.label}>/&nbsp;&nbsp;K{yItem ? getCurrencyFormatter(yData.simulator.k2y.value) : ""}</Typography>
             </Box>
         );
@@ -23,7 +32,7 @@ function CalculatedResult({ yItem, yData }) {
     return (
         <Box style={styles.balance}>
             <Typography style={styles.text.label}>K</Typography>
-            <Typography style={styles.text.amount}>{yItem ? getCurrencyFormatter((Number(yData.simulator.y2k.value) * Number(yItem.MMKRatePerYen))) : ""}</Typography>
+            <Typography style={styles.text.amount}>{yItem ? getCurrencyFormatter((Number(yData.simulator.y2k.value - handlingFee) * Number(yItem.MMKRatePerYen))) : ""}</Typography>
             <Typography style={styles.text.label}>/&nbsp;&nbsp;¥{yItem ? getCurrencyFormatter(yData.simulator.y2k.value) : ""}</Typography>
         </Box>
     );
@@ -45,10 +54,20 @@ export default function SimulationResult() {
         }
     }, [data]);
 
+    const handlingChargesLabel = () => {
+        if (yData.simulator.atmFeeCheck && yData.simulator.remitFeeCheck) {
+            return `(Incl. ATM, Remit fees)`;
+        } else if (yData.simulator.atmFeeCheck) {
+            return `(Incl. ATM fee)`;
+        } else if (yData.simulator.remitFeeCheck) {
+            return `(Incl. Remit fee)`;
+        }
+    }
+
     return (
         <Box style={styles.banner}>
             <Box>
-                <Typography style={styles.text.label}>Simulation Result</Typography>
+                <Typography style={styles.text.label}>Simulation Result {handlingChargesLabel()}</Typography>
 
                 <CalculatedResult yItem={yItem} yData={yData} />
                 <Typography sx={{
@@ -83,7 +102,6 @@ const styles = {
         gap: 10,
         alignItems: "center",
         display: "flex",
-        justifyContent: "space-between",
     },
     yenOrGold: {
         alignItems: "flex-end",
