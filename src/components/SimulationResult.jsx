@@ -95,7 +95,7 @@ const styles = {
         },
         amount: {
             fontWeight: "bold",
-            fontSize: 40,
+            fontSize: 35,
             color: "#fff",
         },
         growth: {

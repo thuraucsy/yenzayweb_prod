@@ -14,7 +14,7 @@ export default function Simulator() {
             height: 600,
             textAlign: "center",
         }}>
-            <FormControl sx={{ border: "1px dotted", padding: 3, borderRadius: 5}}>
+            <FormControl sx={{ border: "1px dotted", padding: 3, borderRadius: 5 }}>
                 <FormLabel>Preferred Method</FormLabel>
                 <RadioGroup
                     row
@@ -27,12 +27,20 @@ export default function Simulator() {
                     paddingTop: 2,
                 }}>
                     <CurrencyField props={{
+                        isAllowed: (values) => {
+                            const { floatValue } = values;
+                            return !floatValue || floatValue >= 0 && floatValue <= 99999999;
+                        },
                         label: "¥ ➡︎ K", prefix: "¥", disabled: yData.simulator.preferMethod != "y2k", value: yData.simulator.y2k.value,
                         onValueChange: (value) => {
                             setLocalStorageYData(yData, setYData, "simulator.y2k", value);
                         },
                     }} />
                     <CurrencyField props={{
+                        isAllowed: (values) => {
+                            const { floatValue } = values;
+                            return !floatValue || floatValue >= 0 && floatValue <= 999999999;
+                        },
                         label: "K ➡︎ ¥", prefix: "K", disabled: yData.simulator.preferMethod != "k2y", value: yData.simulator.k2y.value,
                         onValueChange: (value) => {
                             setLocalStorageYData(yData, setYData, "simulator.k2y", value);

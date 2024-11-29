@@ -11,12 +11,8 @@ export default function CurrencyField({ props }) {
             variant="outlined"
             sx={{ width: '30ch' }}
             thousandSeparator=","
-            {...props}
             type="tel"
-            isAllowed={(values) => {
-                const { floatValue } = values;
-                return !floatValue || floatValue >= 0 && floatValue <= 999999999;
-            }}
+            {...props}
         />
     );
 }
