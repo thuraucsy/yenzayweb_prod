@@ -75,7 +75,7 @@ export default function Simulator() {
         setLocalStorageYData(yData, setYData, "simulator.k2y", value);
         const yenAmt = Math.floor(value.value / yItem.MMKRatePerYen);
         let sbiPricingObj = calculateHandingCharges(yenAmt);
-        
+
         if (sbiPricingObj.lawson) {
             let atmFee = sbiPricingObj.yucho;
             if (yData.simulator.atmType === "lawson") {
@@ -83,7 +83,7 @@ export default function Simulator() {
             }
             const handlingCharges = sbiPricingObj.remit + atmFee;
             sbiPricingObj = calculateHandingCharges(yenAmt + handlingCharges);
-            
+
             setLocalStorageYData(yData, setYData, "simulator.sbiPricingObj", sbiPricingObj);
         }
     };
@@ -112,6 +112,12 @@ export default function Simulator() {
                         },
                         label: "¥ ➡︎ K", prefix: "¥", disabled: yData.simulator.preferMethod != "y2k", value: yData.simulator.y2k.value,
                         onValueChange: y2kChange,
+                    }} propsDelIcon={{
+                        disabled: yData.simulator.preferMethod != "y2k",
+                        onClick: () => {
+                            yData.simulator.y2k.value = "";
+                            setLocalStorageYData(yData, setYData, "simulator.y2k", yData.simulator.y2k);
+                        }
                     }} />
                     <CurrencyField props={{
                         isAllowed: (values) => {
@@ -120,6 +126,12 @@ export default function Simulator() {
                         },
                         label: "K ➡︎ ¥", prefix: "K", disabled: yData.simulator.preferMethod != "k2y", value: yData.simulator.k2y.value,
                         onValueChange: k2yChange
+                    }} propsDelIcon={{
+                        disabled: yData.simulator.preferMethod != "k2y",
+                        onClick: () => {
+                            yData.simulator.k2y.value = "";
+                            setLocalStorageYData(yData, setYData, "simulator.k2y", yData.simulator.k2y);
+                        }
                     }} />
 
                     <FormLabel sx={{ pt: 3 }}>Handling Charges</FormLabel>
