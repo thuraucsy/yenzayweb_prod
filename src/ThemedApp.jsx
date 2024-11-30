@@ -21,7 +21,7 @@ export function useApp() {
 export function getCurrencyFormatter(currencyNum) {
 	if (!currencyNum) { return ""; }
 	currencyNum = currencyNum.toString(); /** numericFormatter only accept string */
-	return numericFormatter(currencyNum, {thousandSeparator: true, decimalScale: 0});
+	return numericFormatter(currencyNum, { thousandSeparator: true, decimalScale: 0 });
 }
 
 export function setLocalStorageYData(yData, setYData, field, value) {
@@ -70,9 +70,9 @@ export default function ThemedApp() {
 			remitFeeCheck: false,
 			atmType: "lawson",
 			sbiPricingObj: {
-                "lawson": "",
-                "yucho": "",
-                "remit": "",
+				"lawson": "",
+				"yucho": "",
+				"remit": "",
 			}
 
 		},
@@ -102,6 +102,18 @@ export default function ThemedApp() {
 		});
 	}, [mode]);
 
+	window.addEventListener("error", (event) => {
+		console.log("window err", event.message);
+		if (event.message) {
+			localStorage.clear();
+			location.reload();
+		}
+	});
+
+	window.addEventListener("unhandledrejection", (event) => {
+		console.log("unhandledrejection err", event.message);
+	});
+
 	return (
 		<ThemeProvider theme={theme}>
 			<AppContext.Provider
@@ -124,7 +136,7 @@ export default function ThemedApp() {
 					setBtnType,
 					yData,
 					setYData,
-					yItem, 
+					yItem,
 					setYItem,
 				}}>
 				<QueryClientProvider client={queryClient}>
