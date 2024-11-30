@@ -17,23 +17,22 @@ function CalculatedResult({ yItem, yData }) {
         handlingFee += yData.simulator.sbiPricingObj.remit ? Number(yData.simulator.sbiPricingObj.remit) : 0;
     }
 
-    if (yData.simulator.preferMethod === "k2y") {
-        // yData.simulator.k2y.value
+    if (yData.simulator.preferMethod === "y2k") {
         return (
             <Box style={styles.balance}>
-                <Typography style={styles.text.label}>¥</Typography>
-                <Typography style={styles.text.amount}>{yItem ? getCurrencyFormatter(Math.ceil((Number(yData.simulator.k2y.value) / Number(yItem.MMKRatePerYen))) + handlingFee) : ""}</Typography>
-                <Typography style={styles.text.label}>/&nbsp;&nbsp;K{yItem ? getCurrencyFormatter(yData.simulator.k2y.value) : ""}</Typography>
+                <Typography style={styles.text.label}>K</Typography>
+                <Typography style={styles.text.amount}>{yItem ? getCurrencyFormatter(Math.floor((Number(yData.simulator.y2k.value - handlingFee) * Number(yItem.MMKRatePerYen)))) : ""}</Typography>
+                <Typography style={styles.text.label}>/&nbsp;&nbsp;¥{yItem ? getCurrencyFormatter(yData.simulator.y2k.value) : ""}</Typography>
             </Box>
-        );
+        );    
     }
 
 
     return (
         <Box style={styles.balance}>
-            <Typography style={styles.text.label}>K</Typography>
-            <Typography style={styles.text.amount}>{yItem ? getCurrencyFormatter(Math.floor((Number(yData.simulator.y2k.value - handlingFee) * Number(yItem.MMKRatePerYen)))) : ""}</Typography>
-            <Typography style={styles.text.label}>/&nbsp;&nbsp;¥{yItem ? getCurrencyFormatter(yData.simulator.y2k.value) : ""}</Typography>
+            <Typography style={styles.text.label}>¥</Typography>
+            <Typography style={styles.text.amount}>{yItem ? getCurrencyFormatter(Math.ceil((Number(yData.simulator.k2y.value) / Number(yItem.MMKRatePerYen))) + handlingFee) : ""}</Typography>
+            <Typography style={styles.text.label}>/&nbsp;&nbsp;K{yItem ? getCurrencyFormatter(yData.simulator.k2y.value) : ""}</Typography>
         </Box>
     );
 }
