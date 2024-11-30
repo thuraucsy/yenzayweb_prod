@@ -66,14 +66,14 @@ export default function Simulator() {
         }
     }
 
-    const y2kChange = (value) => {
-        setLocalStorageYData(yData, setYData, "simulator.y2k", value);
-        setLocalStorageYData(yData, setYData, "simulator.sbiPricingObj", calculateHandingCharges(value.value));
+    const y2kChange = (values) => {
+        setLocalStorageYData(yData, setYData, "simulator.y2k", values);
+        setLocalStorageYData(yData, setYData, "simulator.sbiPricingObj", calculateHandingCharges(values.value));
     };
 
-    const k2yChange = (value) => {
-        setLocalStorageYData(yData, setYData, "simulator.k2y", value);
-        const yenAmt = Math.floor(value.value / yItem.MMKRatePerYen);
+    const k2yChange = (values) => {
+        setLocalStorageYData(yData, setYData, "simulator.k2y", values);
+        const yenAmt = Math.floor(values.value / yItem.MMKRatePerYen);
         let sbiPricingObj = calculateHandingCharges(yenAmt);
 
         if (sbiPricingObj.lawson) {
