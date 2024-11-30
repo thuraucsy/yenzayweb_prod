@@ -5,6 +5,7 @@ import ActionButton from "../components/ActionButton";
 import Calendar from "../components/Calendar";
 import Simulator from "../components/Simulator";
 import Chart from "../components/Chart";
+import FxRate from "../components/FxRate";
 import { useApp } from "../ThemedApp";
 
 function SelectedItem() {
@@ -14,7 +15,7 @@ function SelectedItem() {
 	} else if (btnType == "chart") {
 		return <Chart />;
 	} else if (btnType == "fxRate") {
-		return <Simulator />;
+		return <FxRate />;
 	}
 	return <Calendar />
 }

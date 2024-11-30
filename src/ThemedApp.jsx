@@ -76,6 +76,9 @@ export default function ThemedApp() {
 			}
 
 		},
+		fxRate: {
+			selectedCountry: null
+		}
 	};
 
 	const [showDrawer, setShowDrawer] = useState(false);
