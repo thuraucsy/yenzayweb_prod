@@ -1,4 +1,4 @@
-import { Box, TextField, Autocomplete, List, ListItem, ListItemButton, ListItemText, Slide, Avatar } from '@mui/material';
+import { Box, TextField, Autocomplete, List, ListItem, ListItemAvatar, ListItemText, Slide, Avatar } from '@mui/material';
 import { useApp, setLocalStorageYData } from '../ThemedApp';
 import { useEffect } from "react";
 import { useQuery } from "react-query";
@@ -8,7 +8,7 @@ import { getCurrencyFormatter } from "../ThemedApp";
 export default function FxRate() {
     const { yData, setYData } = useApp();
 
-    const { isLoading, isError, error, data } = useQuery(["fxrate", yData], async () => {
+    const { isLoading, isError, error, data } = useQuery(["fxrate", yData.fxRate.selectedCountry], async () => {
         if (yData.fxRate.selectedCountry) {
             const apiUrl = `https://api.frankfurter.app/latest?from=${(yData.fxRate.selectedCountry.currencyCode.toLowerCase())}`;
             const res = await fetch(apiUrl);
@@ -21,15 +21,15 @@ export default function FxRate() {
 
     useEffect(() => {
         if (data) {
-            console.log("data", data);
+            // console.log("data", data);
         }
     }, [data]);
 
     const convert = code => {
-        const selectedCountryAmt = yData.fxRate.selectedCountry.amt > 0 ? yData.fxRate.selectedCountry.amt : 1;
+        const selectedCountryAmt = yData.fxRate.amt > 0 ? yData.fxRate.amt : 1;
         if (!data || !data.rates[code]) return 0;
 
-        return ` ${code} ${getCurrencyFormatter(selectedCountryAmt * data.rates[code])}`;
+        return `${getCurrencyFormatter(selectedCountryAmt * data.rates[code], 6)}`;
     };
 
     return (
@@ -39,7 +39,7 @@ export default function FxRate() {
             display: "flex",
             flexDirection: "row",
             justifyContent: "center",
-            padding: 3,
+            padding: 2,
         }}>
             <Box sx={{
                 display: "flex",
@@ -63,8 +63,7 @@ export default function FxRate() {
                                 <img
                                     loading="lazy"
                                     width="20"
-                                    srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-                                    src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                                    src={`https://flagcdn.com/${option.code.toLowerCase()}.svg`}
                                     alt=""
                                 />
                                 {option.label} ({option.currencyCode}) {option.phone}
@@ -84,12 +83,7 @@ export default function FxRate() {
                         />
                     )}
                     onChange={(event, newValue) => {
-                        console.log("newValue", newValue)
-                        let newlySelectedCountry = newValue;
-                        if (newValue) {
-                            newlySelectedCountry = { ...newValue, amt: "" }
-                        }
-                        setLocalStorageYData(yData, setYData, "fxRate.selectedCountry", newlySelectedCountry);
+                        setLocalStorageYData(yData, setYData, "fxRate.selectedCountry", newValue);
                     }}
                     value={(yData.fxRate && yData.fxRate.selectedCountry) ? yData.fxRate.selectedCountry : null}
                 />
@@ -103,16 +97,15 @@ export default function FxRate() {
                                         return !floatValue || floatValue >= 0 && floatValue <= 999999999999;
                                     },
                                     label: yData.fxRate.selectedCountry.currencyCode,
-                                    value: yData.fxRate.selectedCountry.amt,
+                                    value: yData.fxRate.amt,
                                     onValueChange: (values) => {
-                                        const newlySelectedCountry = { ...yData.fxRate.selectedCountry, amt: values.value }
-                                        setLocalStorageYData(yData, setYData, "fxRate.selectedCountry", newlySelectedCountry);
+                                        setLocalStorageYData(yData, setYData, "fxRate.amt", values.value);
                                     },
+                                    decimalScale: 6
                                 }}
                                 propsDelIcon={{
                                     onClick: () => {
-                                        const newlySelectedCountry = { ...yData.fxRate.selectedCountry, amt: "" }
-                                        setLocalStorageYData(yData, setYData, "fxRate.selectedCountry", newlySelectedCountry);
+                                        setLocalStorageYData(yData, setYData, "fxRate.amt", "");
                                     }
                                 }} />
 
@@ -124,13 +117,16 @@ export default function FxRate() {
                                             <Box key={item.code} /> :
                                             <Slide direction="up" in={true} mountOnEnter unmountOnExit key={item.code}>
                                                 <List
-                                                    sx={{ bgcolor: "white", borderBottom: "1px dotted", borderRadius: 2 }}
+                                                    sx={{ bgcolor: "white", borderRadius: 2, marginBottom: 2 }}
                                                 >
-                                                    <ListItem disablePadding>
-                                                        <ListItemButton>
-                                                            <Avatar variant="square" src={`https://flagcdn.com/w20/${item.code.toLowerCase()}.png`} sx={{ bgcolor: "white", width: 40, height: 27 }} />
-                                                            <ListItemText primary={convert(item.currencyCode)} />
-                                                        </ListItemButton>
+                                                    <ListItem>
+                                                        <ListItemAvatar>
+                                                            <Avatar
+                                                                variant="square"
+                                                                src={`https://flagcdn.com/${item.code.toLowerCase()}.svg`}
+                                                                sx={{ bgcolor: "white", width: 40, height: 27 }} />
+                                                        </ListItemAvatar>
+                                                        <ListItemText primary={item.label} secondary={item.currencyCode + " " + convert(item.currencyCode)} />
                                                     </ListItem>
                                                 </List>
                                             </Slide>
@@ -166,7 +162,7 @@ const countries = [
     { code: 'IN', currencyCode: 'INR', label: 'India', phone: '+91' },
     { code: 'IS', currencyCode: 'ISK', label: 'Iceland', phone: '+354' },
     { code: 'JP', currencyCode: 'JPY', label: 'Japan', phone: '+81' },
-    { code: 'KR', currencyCode: 'KRW', label: 'Korea, Republic of', phone: '+82' },
+    { code: 'KR', currencyCode: 'KRW', label: 'Republic of Korea', phone: '+82' },
     { code: 'MX', currencyCode: 'MXN', label: 'Mexico', phone: '+52' },
     { code: 'MY', currencyCode: 'MYR', label: 'Malaysia', phone: '+60' },
     { code: 'NO', currencyCode: 'NOK', label: 'Norway', phone: '+47' },
@@ -178,5 +174,6 @@ const countries = [
     { code: 'SG', currencyCode: 'SGD', label: 'Singapore', phone: '+65' },
     { code: 'TH', currencyCode: 'THB', label: 'Thailand', phone: '+66' },
     { code: 'TR', currencyCode: 'TRY', label: 'Turkey', phone: '+90' },
+    { code: 'US', currencyCode: 'USD', label: 'United States', phone: '+1' },
     { code: 'ZA', currencyCode: 'ZAR', label: 'South Africa', phone: '+27' },
 ];

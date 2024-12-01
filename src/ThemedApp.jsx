@@ -18,10 +18,10 @@ export function useApp() {
 	return useContext(AppContext);
 }
 
-export function getCurrencyFormatter(currencyNum) {
+export function getCurrencyFormatter(currencyNum, decimalScale = 0) {
 	if (!currencyNum) { return ""; }
 	currencyNum = currencyNum.toString(); /** numericFormatter only accept string */
-	return numericFormatter(currencyNum, { thousandSeparator: true, decimalScale: 0 });
+	return numericFormatter(currencyNum, { thousandSeparator: true, decimalScale });
 }
 
 export function setLocalStorageYData(yData, setYData, field, value) {
@@ -77,7 +77,8 @@ export default function ThemedApp() {
 
 		},
 		fxRate: {
-			selectedCountry: null
+			selectedCountry: null,
+			amt: "",
 		}
 	};
 
