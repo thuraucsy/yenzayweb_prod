@@ -1,16 +1,19 @@
-import { Box, TextField, Autocomplete, List, ListItem, ListItemAvatar, ListItemText, Slide, Avatar } from '@mui/material';
+import { Box, TextField, Autocomplete, List, ListItem, ListItemAvatar, ListItemText, Slide, Avatar, IconButton } from '@mui/material';
 import { useApp, setLocalStorageYData } from '../ThemedApp';
 import { useEffect } from "react";
 import { useQuery } from "react-query";
 import CurrencyField from "../components/CurrencyField";
 import { getCurrencyFormatter } from "../ThemedApp";
+import { Favorite as FavoriteIcon } from '@mui/icons-material';
+
+const api = import.meta.env.VITE_FX_RATE_API;
 
 export default function FxRate() {
     const { yData, setYData } = useApp();
 
     const { isLoading, isError, error, data } = useQuery(["fxrate", yData.fxRate.selectedCountry], async () => {
         if (yData.fxRate.selectedCountry) {
-            const apiUrl = `https://api.frankfurter.app/latest?from=${(yData.fxRate.selectedCountry.currencyCode.toLowerCase())}`;
+            const apiUrl = `${api}/latest?from=${(yData.fxRate.selectedCountry.currencyCode.toLowerCase())}`;
             const res = await fetch(apiUrl);
             return res.json();
         }
@@ -18,12 +21,6 @@ export default function FxRate() {
         enabled: !yData.fxRate !== undefined || !yData.fxRate.selectedCountry !== undefined || yData.fxRate.selectedCountry.currencyCode !== undefined,
         retry: 1,
     });
-
-    useEffect(() => {
-        if (data) {
-            // console.log("data", data);
-        }
-    }, [data]);
 
     const convert = code => {
         const selectedCountryAmt = yData.fxRate.amt > 0 ? yData.fxRate.amt : 1;
@@ -39,7 +36,6 @@ export default function FxRate() {
             display: "flex",
             flexDirection: "row",
             justifyContent: "center",
-            padding: 2,
         }}>
             <Box sx={{
                 display: "flex",
@@ -119,7 +115,11 @@ export default function FxRate() {
                                                 <List
                                                     sx={{ bgcolor: "white", borderRadius: 2, marginBottom: 2 }}
                                                 >
-                                                    <ListItem>
+                                                    <ListItem secondaryAction={
+                                                        <IconButton edge="end" aria-label="delete">
+                                                            <FavoriteIcon />
+                                                        </IconButton>
+                                                    }>
                                                         <ListItemAvatar>
                                                             <Avatar
                                                                 variant="square"
