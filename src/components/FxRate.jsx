@@ -29,7 +29,7 @@ export default function FxRate() {
         return `${getCurrencyFormatter(selectedCountryAmt * data.rates[code], 6)}`;
     };
 
-    
+    yData.fxRate.fav = yData.fxRate.fav ?? [];
     const favCountries = countries.filter(item => yData.fxRate.fav.includes(item.code));
     const notFavCountries = countries.filter(item => !yData.fxRate.fav.includes(item.code));
     const sortedCountries = [...favCountries, ...notFavCountries];
@@ -127,9 +127,6 @@ export default function FxRate() {
                                                 >
                                                     <ListItem secondaryAction={
                                                         <IconButton edge="end" aria-label="favorite" onClick={() => {
-                                                            yData.fxRate.fav = yData.fxRate.fav ?? [];
-
-
                                                             let fav = [];
                                                             if (yData.fxRate.fav.includes(item.code)) {
                                                                 fav = yData.fxRate.fav.filter(x => x !== item.code)

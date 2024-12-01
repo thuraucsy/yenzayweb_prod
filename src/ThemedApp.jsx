@@ -110,8 +110,8 @@ export default function ThemedApp() {
 	window.addEventListener("error", (event) => {
 		console.log("window err", event.message);
 		if (event.message) {
-			// localStorage.clear();
-			// location.reload();
+			localStorage.clear();
+			location.reload();
 		}
 	});
 
