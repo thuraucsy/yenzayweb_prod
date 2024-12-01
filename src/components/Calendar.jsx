@@ -74,7 +74,7 @@ const styles = {
             color: "rgb(249 19 161)",
             paddingBottom: 6,
             position: "sticky",
-            top: 126,
+            top: 118,
             zIndex: 20,
             textAlign: "right",
         },
