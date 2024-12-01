@@ -79,6 +79,7 @@ export default function ThemedApp() {
 		fxRate: {
 			selectedCountry: null,
 			amt: "",
+			fav: [],
 		}
 	};
 

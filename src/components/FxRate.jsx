@@ -1,10 +1,10 @@
 import { Box, TextField, Autocomplete, List, ListItem, ListItemAvatar, ListItemText, Slide, Avatar, IconButton } from '@mui/material';
 import { useApp, setLocalStorageYData } from '../ThemedApp';
-import { useEffect } from "react";
 import { useQuery } from "react-query";
 import CurrencyField from "../components/CurrencyField";
 import { getCurrencyFormatter } from "../ThemedApp";
 import { Favorite as FavoriteIcon } from '@mui/icons-material';
+import { pink } from '@mui/material/colors';
 
 const api = import.meta.env.VITE_FX_RATE_API;
 
@@ -29,6 +29,11 @@ export default function FxRate() {
         return `${getCurrencyFormatter(selectedCountryAmt * data.rates[code], 6)}`;
     };
 
+    
+    const favCountries = countries.filter(item => yData.fxRate.fav.includes(item.code));
+    const notFavCountries = countries.filter(item => !yData.fxRate.fav.includes(item.code));
+    const sortedCountries = [...favCountries, ...notFavCountries];
+
     return (
         <Box sx={{
             minHeight: 600,
@@ -40,8 +45,8 @@ export default function FxRate() {
             <Box sx={{
                 display: "flex",
                 flexDirection: "column",
-                border: "1px dotted", 
-                padding: 3, 
+                border: "1px dotted",
+                padding: 3,
                 borderRadius: 5
             }}>
                 <Autocomplete
@@ -49,7 +54,7 @@ export default function FxRate() {
                     id="country-select-demo"
                     options={countries}
                     autoHighlight
-                    getOptionLabel={(option) => option.label}
+                    getOptionLabel={(option) => `${option.label} (${option.currencyCode})`}
                     renderOption={(props, option) => {
                         const { key, ...optionProps } = props;
                         return (
@@ -112,7 +117,7 @@ export default function FxRate() {
 
 
                             {
-                                countries.map((item, i, array) => {
+                                sortedCountries.map((item, i, array) => {
                                     return (
                                         item.code === yData.fxRate.selectedCountry.code ?
                                             <Box key={item.code} /> :
@@ -121,10 +126,20 @@ export default function FxRate() {
                                                     sx={{ bgcolor: "white", borderRadius: 2, marginBottom: 2 }}
                                                 >
                                                     <ListItem secondaryAction={
-                                                        <IconButton edge="end" aria-label="favorite" onClick={(event) => {
-                                                            console.log("fav", event)
+                                                        <IconButton edge="end" aria-label="favorite" onClick={() => {
+                                                            yData.fxRate.fav = yData.fxRate.fav ?? [];
+
+
+                                                            let fav = [];
+                                                            if (yData.fxRate.fav.includes(item.code)) {
+                                                                fav = yData.fxRate.fav.filter(x => x !== item.code)
+                                                            } else {
+                                                                fav = [...yData.fxRate.fav, item.code];
+                                                            }
+
+                                                            setLocalStorageYData(yData, setYData, "fxRate.fav", fav);
                                                         }}>
-                                                            <FavoriteIcon />
+                                                            <FavoriteIcon sx={{ color: yData.fxRate.fav.includes(item.code) ? pink[500] : null }} />
                                                         </IconButton>
                                                     }>
                                                         <ListItemAvatar>
