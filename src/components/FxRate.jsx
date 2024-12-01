@@ -1,58 +1,148 @@
-import { Box, TextField, Autocomplete } from '@mui/material';
+import { Box, TextField, Autocomplete, List, ListItem, ListItemButton, ListItemText, Slide, Avatar } from '@mui/material';
 import { useApp, setLocalStorageYData } from '../ThemedApp';
+import { useEffect } from "react";
+import { useQuery } from "react-query";
+import CurrencyField from "../components/CurrencyField";
+import { getCurrencyFormatter } from "../ThemedApp";
 
 export default function FxRate() {
     const { yData, setYData } = useApp();
 
+    const { isLoading, isError, error, data } = useQuery(["fxrate", yData], async () => {
+        if (yData.fxRate.selectedCountry) {
+            const apiUrl = `https://api.frankfurter.app/latest?from=${(yData.fxRate.selectedCountry.currencyCode.toLowerCase())}`;
+            const res = await fetch(apiUrl);
+            return res.json();
+        }
+    }, {
+        enabled: !yData.fxRate !== undefined || !yData.fxRate.selectedCountry !== undefined || yData.fxRate.selectedCountry.currencyCode !== undefined,
+        retry: 1,
+    });
+
+    useEffect(() => {
+        if (data) {
+            console.log("data", data);
+        }
+    }, [data]);
+
+    const convert = code => {
+        const selectedCountryAmt = yData.fxRate.selectedCountry.amt > 0 ? yData.fxRate.selectedCountry.amt : 1;
+        if (!data || !data.rates[code]) return 0;
+
+        return ` ${code} ${getCurrencyFormatter(selectedCountryAmt * data.rates[code])}`;
+    };
+
     return (
         <Box sx={{
-            height: 600,
+            minHeight: 600,
+            textAlign: "center",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            padding: 3,
         }}>
-            <Autocomplete
-                id="country-select-demo"
-                sx={{ width: 300 }}
-                options={countries}
-                autoHighlight
-                getOptionLabel={(option) => option.label}
-                renderOption={(props, option) => {
-                    const { key, ...optionProps } = props;
-                    return (
-                        <Box
-                            key={key}
-                            component="li"
-                            sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
-                            {...optionProps}
-                        >
-                            <img
-                                loading="lazy"
-                                width="20"
-                                srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-                                src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-                                alt=""
-                            />
-                            {option.label} ({option.currencyCode}) {option.phone}
+            <Box sx={{
+                display: "flex",
+                flexDirection: "column",
+            }}>
+                <Autocomplete
+                    sx={{ width: 300, pb: 2 }}
+                    id="country-select-demo"
+                    options={countries}
+                    autoHighlight
+                    getOptionLabel={(option) => option.label}
+                    renderOption={(props, option) => {
+                        const { key, ...optionProps } = props;
+                        return (
+                            <Box
+                                key={key}
+                                component="li"
+                                sx={{ '& > img': { mr: 2, flexShrink: 0 } }}
+                                {...optionProps}
+                            >
+                                <img
+                                    loading="lazy"
+                                    width="20"
+                                    srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                                    src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                                    alt=""
+                                />
+                                {option.label} ({option.currencyCode}) {option.phone}
+                            </Box>
+                        );
+                    }}
+                    renderInput={(params) => (
+                        <TextField
+                            {...params}
+                            label="The country you are visiting"
+                            slotProps={{
+                                htmlInput: {
+                                    ...params.inputProps,
+                                    autoComplete: 'new-password', // disable autocomplete and autofill
+                                },
+                            }}
+                        />
+                    )}
+                    onChange={(event, newValue) => {
+                        console.log("newValue", newValue)
+                        let newlySelectedCountry = newValue;
+                        if (newValue) {
+                            newlySelectedCountry = { ...newValue, amt: "" }
+                        }
+                        setLocalStorageYData(yData, setYData, "fxRate.selectedCountry", newlySelectedCountry);
+                    }}
+                    value={(yData.fxRate && yData.fxRate.selectedCountry) ? yData.fxRate.selectedCountry : null}
+                />
+                {
+                    yData.fxRate && yData.fxRate.selectedCountry ?
+                        <Box>
+                            <CurrencyField
+                                props={{
+                                    isAllowed: (values) => {
+                                        const { floatValue } = values;
+                                        return !floatValue || floatValue >= 0 && floatValue <= 999999999999;
+                                    },
+                                    label: yData.fxRate.selectedCountry.currencyCode,
+                                    value: yData.fxRate.selectedCountry.amt,
+                                    onValueChange: (values) => {
+                                        const newlySelectedCountry = { ...yData.fxRate.selectedCountry, amt: values.value }
+                                        setLocalStorageYData(yData, setYData, "fxRate.selectedCountry", newlySelectedCountry);
+                                    },
+                                }}
+                                propsDelIcon={{
+                                    onClick: () => {
+                                        const newlySelectedCountry = { ...yData.fxRate.selectedCountry, amt: "" }
+                                        setLocalStorageYData(yData, setYData, "fxRate.selectedCountry", newlySelectedCountry);
+                                    }
+                                }} />
+
+
+                            {
+                                countries.map((item, i, array) => {
+                                    return (
+                                        item.code === yData.fxRate.selectedCountry.code ?
+                                            <Box key={item.code} /> :
+                                            <Slide direction="up" in={true} mountOnEnter unmountOnExit key={item.code}>
+                                                <List
+                                                    sx={{ bgcolor: "white", borderBottom: "1px dotted", borderRadius: 2 }}
+                                                >
+                                                    <ListItem disablePadding>
+                                                        <ListItemButton>
+                                                            <Avatar variant="square" src={`https://flagcdn.com/w20/${item.code.toLowerCase()}.png`} sx={{ bgcolor: "white", width: 40, height: 27 }} />
+                                                            <ListItemText primary={convert(item.currencyCode)} />
+                                                        </ListItemButton>
+                                                    </ListItem>
+                                                </List>
+                                            </Slide>
+                                    );
+                                })
+                            }
+
                         </Box>
-                    );
-                }}
-                renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        label="Choose a country that u're visiting"
-                        slotProps={{
-                            htmlInput: {
-                                ...params.inputProps,
-                                autoComplete: 'new-password', // disable autocomplete and autofill
-                            },
-                        }}
-                    />
-                )}
-                onChange={(event, newValue) => {
-                    // setValue(newValue);
-                    console.log("newValue", newValue)
-                    setLocalStorageYData(yData, setYData, "fxRate.selectedCountry", newValue);
-                }}
-                value={(yData.fxRate && yData.fxRate.selectedCountry) ? yData.fxRate.selectedCountry : null}
-            />
+                        : <Box />
+                }
+
+            </Box>
         </Box>
     );
 }
