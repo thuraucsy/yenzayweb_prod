@@ -40,6 +40,9 @@ export default function FxRate() {
             <Box sx={{
                 display: "flex",
                 flexDirection: "column",
+                border: "1px dotted", 
+                padding: 3, 
+                borderRadius: 5
             }}>
                 <Autocomplete
                     sx={{ width: 300, pb: 2 }}
@@ -86,24 +89,26 @@ export default function FxRate() {
                 {
                     yData.fxRate && yData.fxRate.selectedCountry ?
                         <Box>
-                            <CurrencyField
-                                props={{
-                                    isAllowed: (values) => {
-                                        const { floatValue } = values;
-                                        return !floatValue || floatValue >= 0 && floatValue <= 999999999999;
-                                    },
-                                    label: yData.fxRate.selectedCountry.currencyCode,
-                                    value: yData.fxRate.amt,
-                                    onValueChange: (values) => {
-                                        setLocalStorageYData(yData, setYData, "fxRate.amt", values.value);
-                                    },
-                                    decimalScale: 6
-                                }}
-                                propsDelIcon={{
-                                    onClick: () => {
-                                        setLocalStorageYData(yData, setYData, "fxRate.amt", "");
-                                    }
-                                }} />
+                            <Box sx={{ mb: 3 }}>
+                                <CurrencyField
+                                    props={{
+                                        isAllowed: (values) => {
+                                            const { floatValue } = values;
+                                            return !floatValue || floatValue >= 0 && floatValue <= 999999999999;
+                                        },
+                                        label: yData.fxRate.selectedCountry.currencyCode,
+                                        value: yData.fxRate.amt,
+                                        onValueChange: (values) => {
+                                            setLocalStorageYData(yData, setYData, "fxRate.amt", values.value);
+                                        },
+                                        decimalScale: 6
+                                    }}
+                                    propsDelIcon={{
+                                        onClick: () => {
+                                            setLocalStorageYData(yData, setYData, "fxRate.amt", "");
+                                        }
+                                    }} />
+                            </Box>
 
 
                             {
@@ -116,7 +121,9 @@ export default function FxRate() {
                                                     sx={{ bgcolor: "white", borderRadius: 2, marginBottom: 2 }}
                                                 >
                                                     <ListItem secondaryAction={
-                                                        <IconButton edge="end" aria-label="delete">
+                                                        <IconButton edge="end" aria-label="favorite" onClick={(event) => {
+                                                            console.log("fav", event)
+                                                        }}>
                                                             <FavoriteIcon />
                                                         </IconButton>
                                                     }>
