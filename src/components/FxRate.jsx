@@ -1,4 +1,4 @@
-import { Box, TextField, Autocomplete, List, ListItem, ListItemAvatar, ListItemText, Slide, Avatar, IconButton } from '@mui/material';
+import { Box, TextField, Autocomplete, List, ListItem, ListItemAvatar, ListItemText, Slide, Avatar, IconButton, ListItemButton } from '@mui/material';
 import { useApp, setLocalStorageYData } from '../ThemedApp';
 import { useQuery } from "react-query";
 import CurrencyField from "../components/CurrencyField";
@@ -125,27 +125,33 @@ export default function FxRate() {
                                                 <List
                                                     sx={{ bgcolor: "white", borderRadius: 2, marginBottom: 2 }}
                                                 >
-                                                    <ListItem secondaryAction={
-                                                        <IconButton edge="end" aria-label="favorite" onClick={() => {
-                                                            let fav = [];
-                                                            if (yData.fxRate.fav.includes(item.code)) {
-                                                                fav = yData.fxRate.fav.filter(x => x !== item.code)
-                                                            } else {
-                                                                fav = [...yData.fxRate.fav, item.code];
-                                                            }
+                                                    <ListItem
+                                                        secondaryAction={
+                                                            <IconButton edge="end" aria-label="favorite" onClick={() => {
+                                                                let fav = [];
+                                                                if (yData.fxRate.fav.includes(item.code)) {
+                                                                    fav = yData.fxRate.fav.filter(x => x !== item.code)
+                                                                } else {
+                                                                    fav = [...yData.fxRate.fav, item.code];
+                                                                }
 
-                                                            setLocalStorageYData(yData, setYData, "fxRate.fav", fav);
-                                                        }}>
-                                                            <FavoriteIcon sx={{ color: yData.fxRate.fav.includes(item.code) ? pink[500] : null }} />
-                                                        </IconButton>
-                                                    }>
-                                                        <ListItemAvatar>
-                                                            <Avatar
-                                                                variant="square"
-                                                                src={`https://flagcdn.com/${item.code.toLowerCase()}.svg`}
-                                                                sx={{ bgcolor: "white", width: 40, height: 27 }} />
-                                                        </ListItemAvatar>
-                                                        <ListItemText primary={item.label} secondary={item.currencyCode + " " + convert(item.currencyCode)} />
+                                                                setLocalStorageYData(yData, setYData, "fxRate.fav", fav);
+                                                            }}>
+                                                                <FavoriteIcon sx={{ color: yData.fxRate.fav.includes(item.code) ? pink[500] : null }} />
+                                                            </IconButton>
+                                                        }>
+                                                        <ListItemButton
+                                                            onClick={() => {
+                                                                setLocalStorageYData(yData, setYData, "fxRate.selectedCountry", item);
+                                                            }} >
+                                                            <ListItemAvatar>
+                                                                <Avatar
+                                                                    variant="square"
+                                                                    src={`https://flagcdn.com/${item.code.toLowerCase()}.svg`}
+                                                                    sx={{ bgcolor: "white", width: 40, height: 27 }} />
+                                                            </ListItemAvatar>
+                                                            <ListItemText primary={item.label} secondary={item.currencyCode + " " + convert(item.currencyCode)} />
+                                                        </ListItemButton>
                                                     </ListItem>
                                                 </List>
                                             </Slide>
