@@ -143,7 +143,11 @@ export default function FxRate() {
                                                         <ListItemButton
                                                             onClick={() => {
                                                                 setLocalStorageYData(yData, setYData, "fxRate.selectedCountry", item);
-                                                            }} >
+                                                            }}
+                                                            sx={{
+                                                                padding: 0
+                                                            }}
+                                                             >
                                                             <ListItemAvatar>
                                                                 <Avatar
                                                                     variant="square"
