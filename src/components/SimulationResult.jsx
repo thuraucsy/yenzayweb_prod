@@ -90,7 +90,7 @@ const styles = {
         padding: 30,
         borderBottomLeftRadius: 25,
         borderBottomRightRadius: 25,
-        backgroundColor: "rgb(244 113 71)",
+        backgroundColor: "rgb(246 89 39)",
         position: "sticky",
         top: -1,
         zIndex: 10,

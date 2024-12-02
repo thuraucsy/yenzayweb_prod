@@ -71,7 +71,7 @@ const styles = {
     text: {
         label: {
             fontWeight: "bold",
-            color: "rgb(193 0 0)",
+            color: "#000",
             paddingBottom: 6,
             position: "sticky",
             top: 118,
