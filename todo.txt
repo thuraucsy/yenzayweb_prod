@@ -1,14 +1,16 @@
 - fix not exist date err //
 - filter monthly call api //
-- animation for calendar yen zay list
-- double tap simulator btn and switch btn in simulator page
+- animation for calendar yen zay list//
+- double tap simulator btn and switch btn in simulator page//
 yData: {
     y2k: 10000,
     k2y: 100000,
     yitem: {},
     yenOrGoldToggle: "yen",
 }
-- same yen zay > hide set btn
-- font diff for reate changes
+- same yen zay > hide set btn//
+- font diff for reate changes//
 - desktop site max width
-- simulator input validation & input number only
+- simulator input validation & input number only//
+- change color
+- add holiday

@@ -45,7 +45,7 @@ const styles = {
 		backgroundColor: "#f1f1f1",
 	},
 	container: {
-		backgroundColor: "#6d25e5",
+		backgroundColor: "rgb(173 20 20)",
 	},
 	background: {
 		position: "absolute",

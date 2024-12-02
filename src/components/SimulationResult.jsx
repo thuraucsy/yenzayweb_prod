@@ -72,7 +72,7 @@ export default function SimulationResult() {
                 <Typography sx={{
                     fontWeight: "bold",
                     fontStyle: "italic",
-                    color: "#aaa"
+                    color: "#f5dbdb"
                 }}>{yItem.YearMonth}/{yItem.DayTime} ({yItem.MMKRatePerYen})</Typography>
             </Box>
             {/* <Box style={styles.yenOrGold}>
@@ -90,7 +90,7 @@ const styles = {
         padding: 30,
         borderBottomLeftRadius: 25,
         borderBottomRightRadius: 25,
-        backgroundColor: "#6d25e5",
+        backgroundColor: "rgb(244 113 71)",
         position: "sticky",
         top: -1,
         zIndex: 10,
@@ -108,7 +108,7 @@ const styles = {
     text: {
         label: {
             fontWeight: "bold",
-            color: "#aaa",
+            color: "#f5dbdb",
         },
         amount: {
             fontWeight: "bold",

@@ -147,7 +147,7 @@ const styles = {
                 backgroundColor: "rgb(14, 156, 226)",
             },
             rate: {
-                backgroundColor: "rgb(123, 72, 244)",
+                backgroundColor: "rgb(244 72 72)",
             }
         }
     },

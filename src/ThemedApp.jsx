@@ -2,7 +2,7 @@ import { useState, createContext, useContext, useMemo } from "react";
 import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import { deepPurple, grey } from "@mui/material/colors";
+import { deepOrange, grey } from "@mui/material/colors";
 
 import { QueryClientProvider, QueryClient } from "react-query";
 
@@ -98,7 +98,7 @@ export default function ThemedApp() {
 		return createTheme({
 			palette: {
 				mode,
-				primary: deepPurple,
+				primary: deepOrange,
 				banner: mode === "dark" ? grey[800] : grey[200],
 				text: {
 					fade: grey[500],
