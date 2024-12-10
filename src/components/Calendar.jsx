@@ -7,7 +7,7 @@ const api = import.meta.env.VITE_YENZAY_API;
 
 export default function Calendar() {
 
-    const { calendarValue, setYItem } = useApp();
+    const { calendarValue } = useApp();
     let apiUrl = `${api}/day/today.json`;
 
     const { isLoading, isError, error, data } = useQuery(["yenzay", calendarValue], async ({ queryKey }) => {
